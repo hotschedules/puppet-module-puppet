@@ -29,7 +29,7 @@
   #  modules/$environment              : 3rd party modules (upstream code ONLY)
   #  environments/$environment/modules : custom/proprietary puppet code & modules
   #
-  modulepath          = $confdir/modules/$environment:$confdir/environments/$environment/modules
+  modulepath          = $confdir/environments/$environment/modules:$confdir/environments/$environment/dist
   #
   # Main Manifest (per puppet environment)
   #
