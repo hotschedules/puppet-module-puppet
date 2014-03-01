@@ -8,28 +8,28 @@
   - "hosts/%{hostname}"
   - "environment/%{environment}/%{operatingsystem}-%{lsbdistrelease}"     # Linux only
   - "environment/%{environment}/%{operatingsystem}-%{lsbmajdistrelease}"  # Linux only
-  - "environment/%{environment}/%{operatingsystem}" # NOTE: Windows only (win_facts module)
+  - "environment/%{environment}/%{operatingsystemversion}" # NOTE: Windows only (win_facts module)
   - "environment/%{environment}/%{operatingsystem}"
   - "environment/%{environment}/%{osfamily}"
   - "environment/%{environment}/%{kernel}"
   - "environment/%{environment}/defaults"
   - "network/%{subnetwork}/%{operatingsystem}-%{lsbdistrelease}"     # Linux only
   - "network/%{subnetwork}/%{operatingsystem}-%{lsbmajdistrelease}"  # Linux only
-  - "network/%{subnetwork}/%{operatingsystem}" # NOTE: Windows only (win_facts module)
+  - "network/%{subnetwork}/%{operatingsystemversion}" # NOTE: Windows only (win_facts module)
   - "network/%{subnetwork}/%{operatingsystem}"
   - "network/%{subnetwork}/%{osfamily}"
   - "network/%{subnetwork}/%{kernel}"
   - "network/%{subnetwork}/defaults"
   - "network/%{network}/%{operatingsystem}-%{lsbdistrelease}"     # Linux only
   - "network/%{network}/%{operatingsystem}-%{lsbmajdistrelease}"  # Linux only
-  - "network/%{network}/%{operatingsystem}" # NOTE: Windows only (win_facts module)
+  - "network/%{network}/%{operatingsystemversion}" # NOTE: Windows only (win_facts module)
   - "network/%{network}/%{operatingsystem}"
   - "network/%{network}/%{osfamily}"
   - "network/%{network}/%{kernel}"
   - "network/%{network}/defaults"
   - "os/%{operatingsystem}-%{lsbdistrelease}"     # Linux only
   - "os/%{operatingsystem}-%{lsbmajdistrelease}"  # Linux only
-  - "os/%{operatingsystem}" # NOTE: Windows only (win_facts module)
+  - "os/%{operatingsystemversion}" # NOTE: Windows only (win_facts module)
   - "os/%{operatingsystem}"
   - "os/%{osfamily}"
   - "os/%{kernel}"
