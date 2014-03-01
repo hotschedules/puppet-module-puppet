@@ -1,0 +1,17 @@
+# vim: filetype=config tabstop=2 expandtab shiftwidth=2 softtabstop=2 foldmethod=marker smartindent
+#
+# The location to use for storing cached Git repos
+#
+:cachedir: '/var/cache/r10k'
+
+# A list of git repositories to create
+:sources:
+  # This will clone the git repository and instantiate an environment per
+  # branch in /etc/puppet/environments
+  :main:
+    remote: '<%= @r10kremote %>'
+    basedir: '<%= @r10kbasedir %>''
+
+:purgedirs:
+  - '<%= @r10kbasedir %>'
+

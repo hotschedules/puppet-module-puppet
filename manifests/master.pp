@@ -6,6 +6,11 @@
 class puppet::master (
   $enabled,
   $svc,
+
+  # r10k
+  $r10kremote,
+  $r10kcachedir,
+  $r10kbasedir,
 ) {
 
   # Master depends on puppet client configuration
