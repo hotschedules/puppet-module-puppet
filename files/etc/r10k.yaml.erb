@@ -7,10 +7,10 @@
 # A list of git repositories to create
 :sources:
   # This will clone the git repository and instantiate an environment per
-  # branch in /etc/puppet/environments
+  # branch in <%= @r10kbasedir %>
   :main:
-    remote: '<%= @r10kremote %>'
-    basedir: '<%= @r10kbasedir %>'
+    remote:   '<%= @r10kremote %>'
+    basedir:  '<%= @r10kbasedir %>'
 
 :purgedirs:
   - '<%= @r10kbasedir %>'
