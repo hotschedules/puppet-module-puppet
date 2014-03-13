@@ -8,7 +8,7 @@ class puppet::master::config inherits puppet::master {
   clabs::config { '/etc/puppet/hiera.yaml': notify => Service[$svc] }
 
   # r10k
-  clabs::dir { $r10kcachedir: }
+  clabs::dir { $r10kcachedir: owner => 'puppet', group => 'puppet' }
 
   clabs::template { '/etc/r10k.yaml': }
 
