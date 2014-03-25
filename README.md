@@ -35,6 +35,8 @@ puppet::enabled     : true
 puppet::user        : 'puppet'
 puppet::group       : 'puppet'
 puppet::configfile  : '/etc/puppet/puppet.conf'
+puppet::packages    :
+    - 'puppet'
 puppet::settings    :
     'listen'        : false
     'pluginsync'    : true
