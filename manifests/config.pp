@@ -46,5 +46,12 @@ class puppet::config(
 
   ensure_resource("${name}::set", $mergedkeys)
 
+  # Set file perms & ownership
+  ensure_resource('file', $::puppet::configfile, {
+    owner => $::puppet::user,
+    group => 'adm',
+    mode  => '0440', # secure (may contain passwords)
+  })
+
 }
 
