@@ -56,7 +56,7 @@ Same as Linux except for:
 ```yaml
 puppet::configfile  : '/ProgramData/PuppetLabs/puppet/etc/puppet.conf'
 puppet::settings    :
-    'modulepath': 'C:/ProgramData/PuppetLabs/puppet/etc/modules;C:/usr/share/puppet/modules',
+    'modulepath': 'C:/ProgramData/PuppetLabs/puppet/etc/modules;C:/usr/share/puppet/modules'
 ```
 
 ## See Also
