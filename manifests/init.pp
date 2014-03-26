@@ -20,12 +20,12 @@
 #
 # [*user*]
 # - Type - String
-# - Default - puppet
+# - Default - OS Specific
 # - Agent service run-as user
 #
 # [*group*]
 # - Type - String
-# - Default - puppet
+# - Default - OS Specific
 # - Agent service run-as group
 #
 # [*packages*]
@@ -49,8 +49,19 @@
 class puppet (
   $enabled    = true,
   $svc        = 'puppet',
-  $user       = 'puppet',
-  $group      = 'puppet',
+
+  $user       = $::kernel ? {
+    'Linux'   => 'puppet',
+    'windows' => 'SYSTEM',
+    default   => undef,
+  },
+
+  $group      = $::kernel ? {
+    'Linux'   => 'puppet',
+    'windows' => 'Administrators',
+    default   => undef,
+  },
+
   $packages   = [
     'puppet',
   ],

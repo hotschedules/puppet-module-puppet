@@ -50,8 +50,8 @@ class puppet::config(
   # Set file perms & ownership
   ensure_resource('file', $::puppet::configfile, {
     owner => $::puppet::user,
-    group => 'adm',
-    mode  => '0440', # secure (may contain passwords)
+    group => $::puppet::group,
+    mode  => '0660', # secure (may contain passwords)
   })
 
 }

@@ -51,10 +51,13 @@ puppet::settings    :
 ### Default settings (Windows)
 
 Same as Linux except for:
+    - service run-as user & group
     - configuration file location
     - local module directory locations
 
 ```yaml
+puppet::user        : 'SYSTEM'
+puppet::group       : 'Administrators'
 puppet::configfile  : '/ProgramData/PuppetLabs/puppet/etc/puppet.conf'
 puppet::settings    :
     'modulepath': 'C:/ProgramData/PuppetLabs/puppet/etc/modules;C:/usr/share/puppet/modules'
