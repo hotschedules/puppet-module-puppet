@@ -16,14 +16,15 @@
 class puppet::config(
 
   $defaults = {
-    'listen'      => false,
-    'pluginsync'  => true,
-    'autoflush'   => true,
-    'environment' => $::environment,
-    'certname'    => $::fqdn,
-    'server'      => $::servername,
+    'listen'        => false,
+    'pluginsync'    => true,
+    'autoflush'     => true,
+    'environment'   => $::environment,
+    'certname'      => $::fqdn,
+    'server'        => $::servername,
+    'configtimeout' => 300,
 
-    'modulepath'  =>  $::kernel ? {
+    'modulepath'    =>  $::kernel ? {
       'Linux'   => '/etc/puppet/modules:/usr/share/puppet/modules',
       'windows' => 'C:/ProgramData/PuppetLabs/puppet/etc/modules;C:/usr/share/puppet/modules',
       default   => undef,

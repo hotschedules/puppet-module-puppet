@@ -44,6 +44,7 @@ puppet::settings    :
     'environment'   : %{::environment}
     'certname'      : %{::fqdn}
     'server'        : %{::servername}
+    'configtimeout' : 300
     'modulepath'    : '/etc/puppet/modules:/usr/share/puppet/modules'
 ```
 
