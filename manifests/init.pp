@@ -57,7 +57,7 @@ class puppet (
 
   $configfile = $::kernel ? {
     'Linux'   => '/etc/puppet/puppet.conf',
-    'windows' => '/ProgramData/PuppetLabs/puppet/etc/puppet.conf',
+    'windows' => 'C:/ProgramData/PuppetLabs/puppet/etc/puppet.conf',
     default => undef,
   },
 
