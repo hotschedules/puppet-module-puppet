@@ -18,6 +18,16 @@
 # - Default - puppet
 # - Agent service name
 #
+# [*pkg*]
+# - Type - String
+# - Default - puppet
+# - Agent package name
+#
+# [*version*]
+# - Type - String
+# - Default - 3.4.3
+# - Puppet Agent Version
+#
 # [*user*]
 # - Type - String
 # - Default - OS Specific
@@ -27,14 +37,6 @@
 # - Type - String
 # - Default - OS Specific
 # - Agent service run-as group
-#
-# [*packages*]
-# - Type - Array
-# - Default
-#   [
-#    'puppet',
-#   ]
-# - Agent package installation list
 #
 # [*configfile*]
 # - Type - String
@@ -49,6 +51,8 @@
 class puppet (
   $enabled    = true,
   $svc        = 'puppet',
+  $pkg        = 'puppet',
+  $version    = '3.4.3',
 
   $user       = $::kernel ? {
     'Linux'   => 'puppet',
@@ -62,10 +66,6 @@ class puppet (
     default   => undef,
   },
 
-  $packages   = [
-    'puppet',
-  ],
-
   $configfile = $::kernel ? {
     'Linux'   => '/etc/puppet/puppet.conf',
     'windows' => 'C:/ProgramData/PuppetLabs/puppet/etc/puppet.conf',
@@ -76,9 +76,10 @@ class puppet (
 
   validate_bool           ( $enabled    )
   validate_string         ( $svc        )
+  validate_string         ( $pkg        )
+  validate_string         ( $version    )
   validate_string         ( $user       )
   validate_string         ( $group      )
-  validate_array          ( $packages   )
   validate_absolute_path  ( $configfile )
 
   # NOTE: hiera_hash does not work as expected in a parameterized class

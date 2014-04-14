@@ -32,20 +32,21 @@ Configuration settings should be set via Hiera
 
 ```yaml
 puppet::enabled     : true
+puppet::svc         : 'puppet'
+puppet::pkg         : 'puppet'
+puppet::version     : '3.4.3'
 puppet::user        : 'puppet'
 puppet::group       : 'puppet'
 puppet::configfile  : '/etc/puppet/puppet.conf'
-puppet::packages    :
-    - 'puppet'
-puppet::settings    :
-    'listen'        : false
-    'pluginsync'    : true
-    'autoflush'     : true
-    'environment'   : %{::environment}
-    'certname'      : %{::fqdn}
-    'server'        : %{::servername}
-    'configtimeout' : 300
-    'modulepath'    : '/etc/puppet/modules:/usr/share/puppet/modules'
+puppet::settings:
+    listen          : false
+    pluginsync      : true
+    autoflush       : true
+    environment     : %{::environment}
+    certname        : %{::fqdn}
+    server          : %{::servername}
+    configtimeout   : 300
+    modulepath      : '/etc/puppet/modules:/usr/share/puppet/modules'
 ```
 
 ### Default settings (Windows)
@@ -59,8 +60,8 @@ Same as Linux except for:
 puppet::user        : 'SYSTEM'
 puppet::group       : 'Administrators'
 puppet::configfile  : '/ProgramData/PuppetLabs/puppet/etc/puppet.conf'
-puppet::settings    :
-    'modulepath': 'C:/ProgramData/PuppetLabs/puppet/etc/modules;C:/usr/share/puppet/modules'
+puppet::settings:
+    modulepath      : 'C:/ProgramData/PuppetLabs/puppet/etc/modules;C:/usr/share/puppet/modules'
 ```
 
 ## See Also
