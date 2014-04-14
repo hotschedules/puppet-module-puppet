@@ -52,7 +52,7 @@ class puppet (
   $enabled    = true,
   $svc        = 'puppet',
   $pkg        = 'puppet',
-  $version    = '3.4.3',
+  $version    = '3.4.3-1.el6',
 
   $user       = $::kernel ? {
     'Linux'   => 'puppet',

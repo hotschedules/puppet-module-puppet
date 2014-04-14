@@ -34,7 +34,7 @@ Configuration settings should be set via Hiera
 puppet::enabled     : true
 puppet::svc         : 'puppet'
 puppet::pkg         : 'puppet'
-puppet::version     : '3.4.3'
+puppet::version     : '3.4.3-1.el6'
 puppet::user        : 'puppet'
 puppet::group       : 'puppet'
 puppet::configfile  : '/etc/puppet/puppet.conf'
