@@ -25,7 +25,7 @@
 #
 # [*version*]
 # - Type - String
-# - Default - 3.4.3
+# - Default - 3.4.3 (OS specific)
 # - Puppet Agent Version
 #
 # [*user*]
@@ -52,7 +52,11 @@ class puppet (
   $enabled    = true,
   $svc        = 'puppet',
   $pkg        = 'puppet',
-  $version    = '3.4.3-1.el6',
+  $version    = $::osfamily ? {
+    'RedHat'  => '3.4.3-1.el6',
+    'windows' => '3.4.3',
+    default   => undef,
+  },
 
   $user       = $::kernel ? {
     'Linux'   => 'puppet',

@@ -7,9 +7,8 @@
 #
 class puppet::install inherits puppet {
 
-  ensure_resource('package', $pkg, {
+  ensure_resource('clabs::install', $pkg, {
     ensure => $version,
-
   })
 
 }

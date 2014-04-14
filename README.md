@@ -28,7 +28,7 @@ include puppet
 
 Configuration settings should be set via Hiera
 
-### Default settings (Linux)
+### Default settings (RedHat Linux)
 
 ```yaml
 puppet::enabled     : true
