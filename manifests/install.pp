@@ -7,9 +7,13 @@
 #
 class puppet::install inherits puppet {
 
-  ensure_resource('clabs::install', $pkg, {
-    ensure => $version,
-  })
+  # Workaround for chocolatey based package installation not honoring version
+  # lock
+  if $::kernel != 'windows' {
+    ensure_resource('clabs::install', $pkg, {
+      ensure => $version,
+    })
+  }
 
 }
 
