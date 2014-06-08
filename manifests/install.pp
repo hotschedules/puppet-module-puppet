@@ -1,4 +1,4 @@
-# vim: tabstop=2 expandtab shiftwidth=2 softtabstop=2 foldmethod=marker smartindent
+# vim: ts=2:et:sw=2:sts=2:fdm=marker:si
 #
 # == Class: puppet::install
 # ---

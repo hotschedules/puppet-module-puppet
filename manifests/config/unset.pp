@@ -1,3 +1,4 @@
+# vim: ts=2:et:sw=2:sts=2:fdm=marker:si
 #
 # == Define: puppet::config::unset
 # ---
