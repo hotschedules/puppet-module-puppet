@@ -44,39 +44,28 @@
 # - Agent configuration file location (absolute path)
 #
 # [*settings*]
-# - Type - Hash (Hiera only parameter)
-# - Default - NONE
+# - Type - Hash
+# - Default - {}
 # - Agent puppet configuration file settings
 #
+# [*defaults*]
+# - Type - Hash
+# - Default - OS Specific
+# - Agent puppet configuration file setting defaults
+#
 class puppet (
-  $enabled    = true,
-  $svc        = 'puppet',
-  $pkg        = 'puppet',
-  $version    = $::osfamily ? {
-    'RedHat'  => '3.4.3-1.el6',
-    'windows' => '3.4.3',
-    default   => undef,
-  },
 
-  $user       = $::kernel ? {
-    'Linux'   => 'puppet',
-    'windows' => 'SYSTEM',
-    default   => undef,
-  },
+  $enabled    = $::puppet::params::enabled,
+  $svc        = $::puppet::params::svc,
+  $pkg        = $::puppet::params::pkg,
+  $version    = $::puppet::params::version,
+  $user       = $::puppet::params::user,
+  $group      = $::puppet::params::group,
+  $configfile = $::puppet::params::configfile,
+  $settings   = $::puppet::params::settings,
+  $defaults   = $::puppet::params::defaults,
 
-  $group      = $::kernel ? {
-    'Linux'   => 'puppet',
-    'windows' => 'Administrators',
-    default   => undef,
-  },
-
-  $configfile = $::kernel ? {
-    'Linux'   => '/etc/puppet/puppet.conf',
-    'windows' => 'C:/ProgramData/PuppetLabs/puppet/etc/puppet.conf',
-    default => undef,
-  },
-
-) {
+) inherits puppet::params {
 
   validate_bool           ( $enabled    )
   validate_string         ( $svc        )
@@ -85,15 +74,8 @@ class puppet (
   validate_string         ( $user       )
   validate_string         ( $group      )
   validate_absolute_path  ( $configfile )
-
-  # NOTE: hiera_hash does not work as expected in a parameterized class
-  #   definition; so we call it here.
-  #
-  # http://docs.puppetlabs.com/hiera/1/puppet.html#limitations
-  # https://tickets.puppetlabs.com/browse/HI-118
-  #
-  $settings = hiera_hash('puppet::settings', {})
-
+  validate_hash           ( $settings   )
+  validate_hash           ( $defaults   )
 
   # Initialize Module
   clabs::module::init { $name: }

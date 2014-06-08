@@ -5,7 +5,12 @@
 #
 # Installs the Puppet Agent
 #
-class puppet::install inherits puppet {
+class puppet::install(
+
+  $pkg      = $::puppet::pkg,
+  $version  = $::puppet::version,
+
+) {
 
   # Workaround for chocolatey based package installation not honoring version
   # lock

@@ -5,35 +5,19 @@
 #
 # Configures the Puppet Agent
 #
-# === Parameters
-# ---
-#
-# [*defaults*]
-# - Type - Hash
-# - Default - OS specific
-# - Puppet agent configuration settings
+# NOTE: internal use only
 #
 class puppet::config(
 
-  $defaults = {
-    'listen'        => false,
-    'pluginsync'    => true,
-    'autoflush'     => true,
-    'environment'   => $::environment,
-    'certname'      => $::fqdn,
-    'server'        => $::servername,
-    'configtimeout' => 300,
+  $defaults   = $::puppet::defaults,
+  $settings   = $::puppet::settings,
+  $user       = $::puppet::user,
+  $group      = $::puppet::group,
+  $configfile = $::puppet::configfile,
 
-    'modulepath'    =>  $::kernel ? {
-      'Linux'   => '/etc/puppet/modules:/usr/share/puppet/modules',
-      'windows' => 'C:/ProgramData/PuppetLabs/puppet/etc/modules;C:/usr/share/puppet/modules',
-      default   => undef,
-    },
-  },
+) {
 
-) inherits puppet {
-
-  $mergedsettings = merge($defaults, $::puppet::settings)
+  $mergedsettings = merge($defaults, $settings)
 
   validate_bool   ( $mergedsettings['listen']       )
   validate_bool   ( $mergedsettings['pluginsync']   )
@@ -41,16 +25,24 @@ class puppet::config(
   validate_string ( $mergedsettings['environment']  )
   validate_string ( $mergedsettings['certname']     )
   validate_string ( $mergedsettings['server']       )
-  validate_string ( $mergedsettings['modulepath']   )
+
+  # Legacy puppet
+  if versioncmp($::puppetversion,'3.6') == -1 {
+    validate_string ( $mergedsettings['modulepath'] )
+
+  # Remove legacy puppet settings
+  } else {
+    ensure_resource("${name}::unset", 'modulepath')
+  }
 
   $mergedkeys = keys($mergedsettings)
 
   ensure_resource("${name}::set", $mergedkeys)
 
   # Set file perms & ownership
-  ensure_resource('file', $::puppet::configfile, {
-    owner => $::puppet::user,
-    group => $::puppet::group,
+  ensure_resource('file', $configfile, {
+    owner => $user,
+    group => $group,
     mode  => '0660', # secure (may contain passwords)
   })
 
