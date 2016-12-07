@@ -15,7 +15,7 @@ class puppet::install(
   # Workaround for chocolatey based package installation not honoring version
   # lock
   if $::kernel != 'windows' {
-    ensure_resource('clabs::install', $pkg, {
+    ensure_packages( $pkg, {
       ensure => $version,
     })
   }
