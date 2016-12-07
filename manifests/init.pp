@@ -76,7 +76,6 @@ class puppet (
   validate_absolute_path  ( $configfile )
   validate_hash           ( $settings   )
   validate_hash           ( $defaults   )
-  notify { "Puppet version name: ${version}": loglevel => debug }
 
   # Initialize Module
   clabs::module::init { $name: }
