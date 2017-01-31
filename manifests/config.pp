@@ -26,15 +26,6 @@ class puppet::config(
   validate_string ( $mergedsettings['certname']     )
   validate_string ( $mergedsettings['server']       )
 
-  # Legacy puppet
-  if versioncmp($::puppetversion,'3.6') == -1 {
-    validate_string ( $mergedsettings['modulepath'] )
-
-  # Remove legacy puppet settings
-  } else {
-    ensure_resource("${name}::unset", 'modulepath')
-  }
-
   $mergedkeys = keys($mergedsettings)
 
   ensure_resource("${name}::set", $mergedkeys)
