@@ -25,7 +25,7 @@
 #
 # [*version*]
 # - Type - String
-# - Default - 3.4.3 (OS specific)
+# - Default - 3.8.7-1.el6 (OS specific)
 # - Puppet Agent Version
 #
 # [*user*]
