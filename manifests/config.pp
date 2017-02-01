@@ -28,10 +28,23 @@ class puppet::config(
 
   $mergedkeys = keys($mergedsettings)
 
-  ensure_resource("${name}::set", $mergedkeys)
+  define puppetconf(
+    $content        = template('puppet/puppet.conf.erb'),
+    $ensure         = "file",
+    $owner          = $owner,
+    $group          = $group,
+    $mode           = '0660',
+  ) {
+    file { "/etc/puppet/puppet.conf":
+      content       => $content,
+      ensure        => $ensure,
+      owner         => $owner,
+      group         => $group,
+      mode          => $mode
+  }
 
-  # Set file perms & ownership
-  ensure_resource('file', $configfile, {
+  # Create Puppet conf
+  ensure_resource('puppetconf', $configfile, {
     owner => $user,
     group => $group,
     mode  => '0660', # secure (may contain passwords)

@@ -11,14 +11,6 @@ class puppet::install(
   $version  = $::puppet::version,
 
 ) {
-
-  # Workaround for chocolatey based package installation not honoring version
-  # lock
-  if $::kernel != 'windows' {
-    ensure_packages( $pkg, {
-      ensure => $version,
-    })
-  }
-
+    ensure_packages( $pkg, { ensure => $version })
 }
 
