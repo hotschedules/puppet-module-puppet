@@ -50,5 +50,5 @@ class puppet::config(
     mode  => '0660', # secure (may contain passwords)
   })
 
+  }
 }
-

@@ -1,14 +1,10 @@
-<% if @main %>
 [main]
-<%= @main.keys.sort  %->
-<% end %>
+<%= @main.keys.sort  -%>
+
+[agent]
+<%= @agent.keys.sort  -%>
 
 <% if @master %>
 [master]
-<%= @master.keys.sort  %->
-<% end %>
-
-<% if @agent %>
-[agent]
-<%= @agent.keys.sort  %->
+<%= @master.keys.sort  -%>
 <% end %>
