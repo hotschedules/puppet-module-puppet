@@ -41,17 +41,21 @@
 #
 class puppet (
 
-  $agent_hash                 = hiera_hash("::puppet::params::agent"),
-  $master_hash                = hiera_hash("::puppet::params::master"),
-  $main_hash                  = hiera_hash("::puppet::params::main")
+  $agent_hash                 = getvar("::puppet::params::puppetconf::default_agent_hash"),
+  $master_hash                = getvar("::puppet::params::puppetconf::master_agent_hash"),
+  $main_hash                  = getvar("::puppet::params::puppetconf::main_agent_hash")
 
 ) inherits puppet::params {
+  
+  $x_agent_hash               = hiera_hash('puppet::params::agent')
+  $x_master_hash              = hiera_hash('puppet::params::master')
+  $x_main_hash                = hiera_hash('puppet::params::main')
  
   # [main] section parameters
-  $logdir                     =  $main_hash["logdir"]
-  $rundir                     =  $main_hash["rundir"]
-  $ssldir                     =  $main_hash["ssldir"]
-  $disable_warnings           =  $main_hash["disable_warnings"]
+  $logdir                     =  $x_main_hash["logdir"]
+  $rundir                     =  $x_main_hash["rundir"]
+  $ssldir                     =  $x_main_hash["ssldir"]
+  $disable_warnings           =  $x_main_hash["disable_warnings"]
 
   validate_absolute_path  ( $logdir     )
   validate_absolute_path  ( $rundir     )
@@ -59,15 +63,15 @@ class puppet (
   validate_string         ( $disable_warnings )
   
   # [agent] section parameters
-  $certname 				          =  $agent_hash["certname"]
-  $pluginsync 			          =  $agent_hash["pluginsync"]
-  $configtimeout 		          =  $agent_hash["configtimeout"]
-  $autoflush 				          =  $agent_hash["autoflush"]
-  $splay 					            =  $agent_hash["splay"]
-  $environment 			          =  $agent_hash["environment"]
-  $listen 					          =  $agent_hash["listen"]
-  $server 					          =  $agent_hash["server"]
-  $disable_warnings           =  $agent_hash["disable_warnings"]
+  $certname 				          =  $x_agent_hash["certname"]
+  $pluginsync 			          =  $x_agent_hash["pluginsync"]
+  $configtimeout 		          =  $x_agent_hash["configtimeout"]
+  $autoflush 				          =  $x_agent_hash["autoflush"]
+  $splay 					            =  $x_agent_hash["splay"]
+  $environment 			          =  $x_agent_hash["environment"]
+  $listen 					          =  $x_agent_hash["listen"]
+  $server 					          =  $x_agent_hash["server"]
+  $disable_warnings           =  $x_agent_hash["disable_warnings"]
 
   validate_string         ( $certname      )
   validate_bool           ( $pluginsync    )
@@ -79,16 +83,16 @@ class puppet (
   validate_string         ( $server        )
   
   # [master] section parameters
-  $modulepath               = $master_hash["modulepath"]
-  $ssl_client_verify_header	= $master_hash["ssl_client_verify_header"]
-  $pluginsync               = $master_hash["pluginsync"]
-  $manifest                 = $master_hash["manifest"]
-  $certname                 = $master_hash["certname"]
-  $ssl_client_header        = $master_hash["ssl_client_header"]
-  $filetimeout              = $master_hash["filetimeout"]
-  $dns_alt_names            = $master_hash["dns_alt_names"]
-  $autosign                 = $master_hash["autosign"]
-  $environment              = $master_hash["environment"]
+  $modulepath               = $x_master_hash["modulepath"]
+  $ssl_client_verify_header	= $x_master_hash["ssl_client_verify_header"]
+  $pluginsync               = $x_master_hash["pluginsync"]
+  $manifest                 = $x_master_hash["manifest"]
+  $certname                 = $x_master_hash["certname"]
+  $ssl_client_header        = $x_master_hash["ssl_client_header"]
+  $filetimeout              = $x_master_hash["filetimeout"]
+  $dns_alt_names            = $x_master_hash["dns_alt_names"]
+  $autosign                 = $x_master_hash["autosign"]
+  $environment              = $x_master_hash["environment"]
 
   validate_string           ( $modulepath                 )
   validate_string           ( $ssl_client_verify_header   )
