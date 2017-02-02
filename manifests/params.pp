@@ -7,7 +7,7 @@
 #
 class puppet::params {
 
-contain puppet::params::puppetconf"
+contain "puppet::params::puppetconf"
 
 }
 
