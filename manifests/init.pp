@@ -1,17 +1,3 @@
-# vim: ts=2:et:sw=2:sts=2:fdm=marker:si
-#
-# == Class: puppet
-# ---
-#
-# Manages the Puppet Agent
-#
-# === Parameters
-# ---
-#
-# [*enabled*]
-# - Type - Boolean
-# - Default - true
-# - Agent auto run
 #
 # [*svc*]
 # - Type - String
@@ -56,8 +42,8 @@
 class puppet (
 
   $agent_hash                 = hiera_hash("::puppet::params::agent"),
-  $master_hash                = hiera_hash("::puppet::params::agent"),
-  $main_hash                  = hiera_hash("::puppet::params::agent")
+  $master_hash                = hiera_hash("::puppet::params::master"),
+  $main_hash                  = hiera_hash("::puppet::params::main")
 
 ) inherits puppet::params {
  

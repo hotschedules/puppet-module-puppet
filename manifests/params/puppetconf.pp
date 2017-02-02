@@ -8,38 +8,37 @@ class puppet::params::puppetconf {
   $version    = '3.8.7-1.el6'
   $user       = 'puppet'
   $group      = 'puppet'
-
   $configfile = '/etc/puppet/puppet.conf'
 
-  # NOTE: hiera_hash does not work as expected in a parameterized class
-  #   definition; so we call it here.
-  #
-  # http://docs.puppetlabs.com/hiera/1/puppet.html#limitations
-  # https://tickets.puppetlabs.com/browse/HI-118
-  #
-  $settings = hiera_hash('puppet::settings', {})
-
-  $defaults   = $::puppet::defaults,
-  $settings   = $::puppet::settings,
-  $user       = $::puppet::user,
-  $group      = $::puppet::group,
-  $configfile = $::puppet::configfile,
-
-
-
-  # -- $defaults ----------------------------------------------------------- {{{
-  #
-  $defaults = {
-    'listen'        => false,
-    'pluginsync'    => true,
-    'autoflush'     => true,
-    'environment'   => $::environment,
-    'certname'      => $::fqdn,
-    'server'        => $::servername,
-    'configtimeout' => 300,
+  $default_main_hash                  = {
+    $logdir                     => '/var/log/puppet',
+    $rundir                     => '/var/run/puppet',
+    $ssldir                     => '$vardir/ssl',
+    $disable_warnings           => 'deprecations'
   }
-  #
-  # ------------------------------------------------------------------------ }}}
 
+  $default_agent_hash                 = {
+    $certname 				          => $::fqdn,
+    $pluginsync 			          => true,
+    $configtimeout 		          => 3600,
+    $autoflush 				          => true,
+    $splay 					            => true
+    $environment 			          => $::environment,
+    $listen 					          => false,
+    $server 					          => $::servername,
+    $disable_warnings           => 'deprecations'
+  }
 
+  $default_master_hash                = {
+    $modulepath                 => '$confdir/environments/$environment/modules:$confdir/environments/$environment/dist',
+    $ssl_client_verify_header	  => 'SSL_CLIENT_VERIFY', 
+    $pluginsync                 => true,
+    $manifest                   => '$confdir/environments/$environment/manifests',
+    $certname                   => $::servername,
+    $ssl_client_header          => 'SSL_CLIENT_S_DN'
+    $filetimeout                => 1,
+    $dns_alt_names              => 'puppet,dev-puppet-01',
+    $autosign                   => true,
+    $environment                => $::environment,
+  }
 } 
