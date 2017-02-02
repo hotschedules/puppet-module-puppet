@@ -93,19 +93,27 @@ class puppet (
   validate_string         ( $server        )
   
   # [master] section parameters
-  $modulepaths                = $master_hash["modulepath"]
-  $ssl_client_verify_headers	= $master_hash["ssl_client_verify_header"]
-  $pluginsyncs                = $master_hash["pluginsync"]
-  $manifests                  = $master_hash["manifest"]
-  $certnames                  = $master_hash["certname"]
-  $ssl_client_headers         = $master_hash["ssl_client_header"]
-  $filetimeouts               = $master_hash["filetimeout"]
-  $dns_alt_namess             = $master_hash["dns_alt_names"]
-  $autosigns                  = $master_hash["autosign"]
-  $environments               = $master_hash["environment"]
+  $modulepath               = $master_hash["modulepath"]
+  $ssl_client_verify_header	= $master_hash["ssl_client_verify_header"]
+  $pluginsync               = $master_hash["pluginsync"]
+  $manifest                 = $master_hash["manifest"]
+  $certname                 = $master_hash["certname"]
+  $ssl_client_header        = $master_hash["ssl_client_header"]
+  $filetimeout              = $master_hash["filetimeout"]
+  $dns_alt_names            = $master_hash["dns_alt_names"]
+  $autosign                 = $master_hash["autosign"]
+  $environment              = $master_hash["environment"]
 
-  validate_bool           ( $pluginsync       )
-  validate_bool           ( $autosign         )
+  validate_string           ( $modulepath                 )
+  validate_string           ( $ssl_client_verify_header   )
+  validate_bool             ( $pluginsync                 )
+  validate_string           ( $manifest                   )
+  validate_string           ( $certname                   )
+  validate_string           ( $ssl_client_header          )
+  validate_integer          ( $filetimeout                )
+  validate_string           ( $dns_alt_names              )
+  validate_bool             ( $autosign                   )
+  validate_string           ( $environment                )
 
   # Initialize Module
   clabs::module::init { $name: }
