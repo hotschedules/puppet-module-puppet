@@ -11,34 +11,34 @@ class puppet::params::puppetconf {
   $configfile = '/etc/puppet/puppet.conf'
 
   $default_main_hash = {
+    $disable_warnings           => 'deprecations',
     $logdir                     => '/var/log/puppet',
     $rundir                     => '/var/run/puppet',
     $ssldir                     => '$vardir/ssl',
-    $disable_warnings           => 'deprecations'
   }
 
   $default_agent_hash = {
-    $certname 				          => $::fqdn,
-    $pluginsync 			          => true,
-    $configtimeout 		          => 3600,
     $autoflush 				          => true,
-    $splay 					            => true
+    $certname 				          => $::fqdn,
+    $configtimeout 		          => 3600,
+    $disable_warnings           => 'deprecations',
     $environment 			          => $::environment,
     $listen 					          => false,
+    $pluginsync 			          => true,
     $server 					          => $::servername,
-    $disable_warnings           => 'deprecations'
+    $splay 					            => true,
   }
 
   $default_master_hash = {
-    $modulepath                 => '$confdir/environments/$environment/modules:$confdir/environments/$environment/dist',
-    $ssl_client_verify_header	  => 'SSL_CLIENT_VERIFY', 
-    $pluginsync                 => true,
-    $manifest                   => '$confdir/environments/$environment/manifests',
-    $certname                   => $::servername,
-    $ssl_client_header          => 'SSL_CLIENT_S_DN'
-    $filetimeout                => 1,
-    $dns_alt_names              => 'puppet,dev-puppet-01',
     $autosign                   => true,
+    $certname                   => $::servername,
+    $dns_alt_names              => 'puppet,dev-puppet-01',
     $environment                => $::environment,
+    $filetimeout                => 1,
+    $manifest                   => '$confdir/environments/$environment/manifests',
+    $modulepath                 => '$confdir/environments/$environment/modules:$confdir/environments/$environment/dist',
+    $pluginsync                 => true,
+    $ssl_client_header          => 'SSL_CLIENT_S_DN',
+    $ssl_client_verify_header	  => 'SSL_CLIENT_VERIFY', 
   }
 } 
