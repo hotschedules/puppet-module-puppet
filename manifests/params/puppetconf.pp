@@ -10,14 +10,14 @@ class puppet::params::puppetconf {
   $group      = 'puppet'
   $configfile = '/etc/puppet/puppet.conf'
 
-  $default_main_hash                  = {
+  $default_main_hash = {
     $logdir                     => '/var/log/puppet',
     $rundir                     => '/var/run/puppet',
     $ssldir                     => '$vardir/ssl',
     $disable_warnings           => 'deprecations'
   }
 
-  $default_agent_hash                 = {
+  $default_agent_hash = {
     $certname 				          => $::fqdn,
     $pluginsync 			          => true,
     $configtimeout 		          => 3600,
@@ -29,7 +29,7 @@ class puppet::params::puppetconf {
     $disable_warnings           => 'deprecations'
   }
 
-  $default_master_hash                = {
+  $default_master_hash = {
     $modulepath                 => '$confdir/environments/$environment/modules:$confdir/environments/$environment/dist',
     $ssl_client_verify_header	  => 'SSL_CLIENT_VERIFY', 
     $pluginsync                 => true,

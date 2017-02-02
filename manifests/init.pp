@@ -1,44 +1,13 @@
+# vim: tabstop=2 expandtab shiftwidth=2 softtabstop=2 foldmethod=marker
 #
-# [*svc*]
-# - Type - String
-# - Default - puppet
-# - Agent service name
+# == Class: puppet
 #
-# [*pkg*]
-# - Type - String
-# - Default - puppet
-# - Agent package name
+# Full description of class puppet here.
 #
-# [*version*]
-# - Type - String
-# - Default - 3.8.7-1.el6 (OS specific)
-# - Puppet Agent Version
+# === Parameters
+# ---
 #
-# [*user*]
-# - Type - String
-# - Default - OS Specific
-# - Agent service run-as user
-#
-# [*group*]
-# - Type - String
-# - Default - OS Specific
-# - Agent service run-as group
-#
-# [*configfile*]
-# - Type - String
-# - Default - OS Specific
-# - Agent configuration file location (absolute path)
-#
-# [*settings*]
-# - Type - Hash
-# - Default - {}
-# - Agent puppet configuration file settings
-#
-# [*defaults*]
-# - Type - Hash
-# - Default - OS Specific
-# - Agent puppet configuration file setting defaults
-#
+
 class puppet (
 
   $agent_hash                 = getvar("::puppet::params::puppetconf::default_agent_hash"),
@@ -47,6 +16,7 @@ class puppet (
 
 ) inherits puppet::params {
   
+  # Merge config hashes
   $x_agent_hash               = hiera_hash('puppet::params::agent')
   $x_master_hash              = hiera_hash('puppet::params::master')
   $x_main_hash                = hiera_hash('puppet::params::main')
