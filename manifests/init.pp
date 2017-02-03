@@ -75,8 +75,7 @@ class puppet (
   validate_bool             ( $autosign                   )
   validate_string           ( $environment                )
 
-  # Initialize Module
-  clabs::module::init { $name: }
+  contain 'puppet::config'
 
 }
 
