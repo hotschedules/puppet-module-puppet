@@ -4,7 +4,7 @@
 [agent]
 <%= @agent_hash.keys.each {|k,v| "#{k} #{v}"  -%>
 
-<% if @master %>
+<% if @instance_role == "puppet" %>
 [master]
 <%= @master_hash.keys.each {|k,v| "#{k} #{v}"  -%>
 <% end %>
