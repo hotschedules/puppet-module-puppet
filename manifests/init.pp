@@ -10,9 +10,9 @@
 
 class puppet (
 
-  $agent_hash                 = getvar("::puppet::params::puppetconf::default_agent_hash"),
-  $master_hash                = getvar("::puppet::params::puppetconf::master_agent_hash"),
-  $main_hash                  = getvar("::puppet::params::puppetconf::main_agent_hash")
+  $agent_hash                 = getvar("::puppet::params::default_agent_hash"),
+  $master_hash                = getvar("::puppet::params::master_agent_hash"),
+  $main_hash                  = getvar("::puppet::params::main_agent_hash")
 
 ) inherits puppet::params {
   
