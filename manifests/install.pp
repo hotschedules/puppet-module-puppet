@@ -5,12 +5,8 @@
 #
 # Installs the Puppet Agent
 #
-class puppet::install(
-
-  $pkg      = $::puppet::params::puppetconf::pkg,
-  $version  = $::puppet::params::puppetconf::version,
-
-) {
+class puppet::install inherits puppet
+  {
     ensure_packages( $pkg, { ensure => $version })
 }
 
