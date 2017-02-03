@@ -1,10 +1,10 @@
 [main]
-<%= @main_hash.keys.each {|k,v| "#{k} #{v}"  -%>
+<%= @x_conf_hash['main'].each { |k,v| "#{k} #{v}"   } -%>
 
 [agent]
-<%= @agent_hash.keys.each {|k,v| "#{k} #{v}"  -%>
+<%= @x_conf_hash['agent'].each { |k,v| "#{k} #{v}"  } -%>
 
 <% if @instance_role == "puppet" %>
 [master]
-<%= @master_hash.keys.each {|k,v| "#{k} #{v}"  -%>
+<%= @x_conf_hash['master'].each { |k,v| "#{k} #{v}" } -%>
 <% end %>
