@@ -30,7 +30,7 @@ class puppet (
   validate_string         ( $disable_warnings )
   validate_absolute_path  ( $logdir     )
   validate_absolute_path  ( $rundir     )
-  validate_absolute_path  ( $ssldir     )
+  validate_string         ( $ssldir     )
   
   # [agent] section parameters
   $autoflush 				          =  $x_agent_hash["autoflush"]
@@ -53,7 +53,7 @@ class puppet (
   
   # [master] section parameters
   $autosign                 = $x_master_hash["autosign"]
-  $certname                 = $x_master_hash["certname"]
+  $mastercertname                 = $x_master_hash["certname"]
   $dns_alt_names            = $x_master_hash["dns_alt_names"]
   $environment              = $x_master_hash["environment"]
   $filetimeout              = $x_master_hash["filetimeout"]
@@ -64,7 +64,7 @@ class puppet (
   $ssl_client_verify_header	= $x_master_hash["ssl_client_verify_header"]
 
   validate_bool             ( $autosign                   )
-  validate_string           ( $certname                   )
+  validate_string           ( $mastercertname                   )
   validate_string           ( $dns_alt_names              )
   validate_string           ( $environment                )
   validate_integer          ( $filetimeout                )
