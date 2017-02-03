@@ -9,12 +9,13 @@
 #
 
 class puppet (
-
   $agent_hash                 = getvar("::puppet::params::default_agent_hash"),
   $main_hash                  = getvar("::puppet::params::main_agent_hash"),
   $master_hash                = getvar("::puppet::params::master_agent_hash"),
-
 ) inherits puppet::params {
+
+  $configfile                 = getvar("::puppet::params::configfile")
+  validate_absolute_path      ( $configfile)
   
   # Merge config hashes
   $x_agent_hash               = hiera_hash('puppet::params::agent', $agent_hash)
