@@ -45,7 +45,6 @@ class puppet (
   validate_bool           ( $autoflush     )
   validate_string         ( $certname      )
   validate_integer        ( $configtimeout )
-  validate_string         ( $environment   )
   validate_bool           ( $listen        )
   validate_bool           ( $pluginsync    )
   validate_string         ( $server        )
@@ -53,24 +52,24 @@ class puppet (
   
   # [master] section parameters
   $autosign                 = $x_master_hash["autosign"]
-  $mastercertname                 = $x_master_hash["certname"]
+  $mastercertname           = $x_master_hash["certname"]
   $dns_alt_names            = $x_master_hash["dns_alt_names"]
-  $environment              = $x_master_hash["environment"]
+  $masterenvironment        = $x_master_hash["environment"]
   $filetimeout              = $x_master_hash["filetimeout"]
   $manifest                 = $x_master_hash["manifest"]
   $modulepath               = $x_master_hash["modulepath"]
-  $pluginsync               = $x_master_hash["pluginsync"]
+  $masterpluginsync         = $x_master_hash["pluginsync"]
   $ssl_client_header        = $x_master_hash["ssl_client_header"]
   $ssl_client_verify_header	= $x_master_hash["ssl_client_verify_header"]
 
   validate_bool             ( $autosign                   )
-  validate_string           ( $mastercertname                   )
+  validate_string           ( $mastercertname             )
   validate_string           ( $dns_alt_names              )
-  validate_string           ( $environment                )
+  validate_string           ( $masterenvironment          )
   validate_integer          ( $filetimeout                )
   validate_string           ( $modulepath                 )
   validate_string           ( $manifest                   )
-  validate_bool             ( $pluginsync                 )
+  validate_bool             ( $masterpluginsync           )
   validate_string           ( $ssl_client_header          )
   validate_string           ( $ssl_client_verify_header   )
 

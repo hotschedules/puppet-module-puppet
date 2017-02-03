@@ -1,10 +1,10 @@
 [main]
-<%= @main.keys.sort  -%>
+<%= @main_hash.keys.each {|k,v| "#{k} #{v}"  -%>
 
 [agent]
-<%= @agent.keys.sort  -%>
+<%= @agent_hash.keys.each {|k,v| "#{k} #{v}"  -%>
 
 <% if @master %>
 [master]
-<%= @master.keys.sort  -%>
+<%= @master_hash.keys.each {|k,v| "#{k} #{v}"  -%>
 <% end %>

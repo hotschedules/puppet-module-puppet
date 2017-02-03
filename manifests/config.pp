@@ -10,11 +10,14 @@
 class puppet::config inherits puppet {
 
   define puppetconf(
+    $agent_hash     = $x_agent_hash,
     $content        = template('puppet/puppet.conf.erb'),
     $ensure         = "file",
     $owner          = $owner,
     $group          = $group,
     $mode           = '0660',
+    $main_hash      = $x_main_hash,
+    $master_hash    = $x_master_hash,
   ) {
     file { "/etc/puppet/puppet.conf":
       content       => $content,
