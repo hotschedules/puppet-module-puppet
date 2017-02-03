@@ -1,5 +1,5 @@
-# == Class puppet::params::puppetconf
-class puppet::params::puppetconf {
+# == Class puppet::params::default
+class puppet::params::default {
   $enabled    = true
 
   $svc        = 'puppet'
@@ -10,14 +10,14 @@ class puppet::params::puppetconf {
   $group      = 'puppet'
   $configfile = '/etc/puppet/puppet.conf'
 
-  $default_main_hash = {
+  $main = {
     disable_warnings           => 'deprecations',
     logdir                     => '/var/log/puppet',
     rundir                     => '/var/run/puppet',
     ssldir                     => '$vardir/ssl',
   }
 
-  $default_agent_hash = {
+  $agent = {
     autoflush 				         => true,
     certname 				           => $::fqdn,
     configtimeout 		         => 3600,
@@ -29,7 +29,7 @@ class puppet::params::puppetconf {
     splay 					           => true,
   }
 
-  $default_master_hash = {
+  $master = {
     autosign                   => true,
     certname                   => $::servername,
     dns_alt_names              => 'puppet,dev-puppet-01',
@@ -40,12 +40,6 @@ class puppet::params::puppetconf {
     pluginsync                 => true,
     ssl_client_header          => 'SSL_CLIENT_S_DN',
     ssl_client_verify_header	 => 'SSL_CLIENT_VERIFY', 
-  }
-
-   $default_conf_hash = {
-    agent     => $default_agent_hash,
-    master    => $default_master_hash,
-    main      => $default_main_hash
   }
 
 } 

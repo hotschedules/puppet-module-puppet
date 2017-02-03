@@ -9,12 +9,12 @@
 #
 
 class puppet (
-  $agent_hash                 = getvar("::puppet::params::puppetconf::default_agent_hash"),
-  $configfile                 = getvar("::puppet::params::puppetconf::configfile"),
-  $main_hash                  = getvar("::puppet::params::puppetconf::main_agent_hash"),
-  $master_hash                = getvar("::puppet::params::puppetconf::master_agent_hash"),
-  $pkg                        = getvar("::puppet::params::puppetconf::pkg"),
-  $version                    = getvar("::puppet::params::puppetconf::version"),
+  $agent_hash                 = getvar("::puppet::params::default::agent"),
+  $configfile                 = getvar("::puppet::params::default::configfile"),
+  $main_hash                  = getvar("::puppet::params::default::master"),
+  $master_hash                = getvar("::puppet::params::default::master"),
+  $pkg                        = getvar("::puppet::params::default::pkg"),
+  $version                    = getvar("::puppet::params::default::version"),
 ) inherits puppet::params {
 
   validate_absolute_path      ( $configfile )

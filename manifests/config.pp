@@ -10,7 +10,7 @@
 class puppet::config inherits puppet {
 
   define puppetconf(
-    $conf_hash     = $x_conf_hash,
+    $conf_hash      = $x_conf_hash,
     $content        = template('puppet/puppet.conf.erb'),
     $ensure         = "file",
     $owner          = $owner,
@@ -28,6 +28,6 @@ class puppet::config inherits puppet {
 
 
   # Create Puppet conf
-  ensure_resource(puppetconf, $conf_hash, $default_conf_hash) 
+  ensure_resource(puppetconf, $conf_hash)
 
 }
