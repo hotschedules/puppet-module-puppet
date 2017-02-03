@@ -79,6 +79,10 @@ class puppet (
   validate_string           ( $ssl_client_header          )
   validate_string           ( $ssl_client_verify_header   )
 
+  class { '::puppet::install': } ->
+  class { '::puppet::config': }
+
+  contain 'puppet::install'
   contain 'puppet::config'
 
 }
