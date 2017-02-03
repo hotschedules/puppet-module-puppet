@@ -17,9 +17,14 @@ class puppet (
 ) inherits puppet::params {
   
   # Merge config hashes
-  $x_agent_hash               = hiera_hash('puppet::params::agent')
-  $x_main_hash                = hiera_hash('puppet::params::main')
-  $x_master_hash              = hiera_hash('puppet::params::master')
+  $x_agent_hash               = hiera_hash('puppet::params::agent', $agent_hash)
+  $x_main_hash                = hiera_hash('puppet::params::main', $main_hash)
+  $x_master_hash              = hiera_hash('puppet::params::master', $master_hash)
+  $x_conf_hash = {
+    agent     => $x_agent_hash,
+    master    => $x_master_hash,
+    main      => $x_main_hash
+  }
  
   # [main] section parameters
   $disable_warnings           =  $x_main_hash["disable_warnings"]

@@ -10,14 +10,12 @@
 class puppet::config inherits puppet {
 
   define puppetconf(
-    $agent_hash     = $x_agent_hash,
+    $conf_hash     = $x_conf_hash,
     $content        = template('puppet/puppet.conf.erb'),
     $ensure         = "file",
     $owner          = $owner,
     $group          = $group,
     $mode           = '0660',
-    $main_hash      = $x_main_hash,
-    $master_hash    = $x_master_hash,
   ) {
     file { "/etc/puppet/puppet.conf":
       content       => $content,
@@ -28,11 +26,7 @@ class puppet::config inherits puppet {
   }
 
   # Create Puppet conf
-  ensure_resource('puppetconf', $configfile, {
-    owner => $user,
-    group => $group,
-    mode  => '0660', # secure (may contain passwords)
-  })
+  ensure_resource(puppetconf, $conf_hash, $default_conf_hash) 
 
   }
 }

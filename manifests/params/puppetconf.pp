@@ -41,4 +41,11 @@ class puppet::params::puppetconf {
     ssl_client_header          => 'SSL_CLIENT_S_DN',
     ssl_client_verify_header	 => 'SSL_CLIENT_VERIFY', 
   }
+
+   $default_conf_hash = {
+    agent     => $default_agent_hash,
+    master    => $default_master_hash,
+    main      => $default_main_hash
+  }
+
 } 
