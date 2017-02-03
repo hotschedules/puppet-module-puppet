@@ -17,16 +17,17 @@ class puppet::config inherits puppet {
     $group          = $group,
     $mode           = '0660',
   ) {
-    file { "/etc/puppet/puppet.conf":
+    file { "${configfile}":
       content       => $content,
       ensure        => $ensure,
       owner         => $owner,
       group         => $group,
       mode          => $mode
+    }
   }
+
 
   # Create Puppet conf
   ensure_resource(puppetconf, $conf_hash, $default_conf_hash) 
 
-  }
 }
