@@ -7,8 +7,8 @@
 #
 class puppet::install(
 
-  $pkg      = $::puppet::pkg,
-  $version  = $::puppet::version,
+  $pkg      = $::puppet::params::puppetconf::pkg,
+  $version  = $::puppet::params::puppetconf::version,
 
 ) {
     ensure_packages( $pkg, { ensure => $version })
