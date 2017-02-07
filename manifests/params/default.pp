@@ -10,6 +10,14 @@ class puppet::params::default {
   $group      = 'puppet'
   $configfile = '/etc/puppet/puppet.conf'
 
+  $agent_defaults = {
+    content => template('puppet/puppet.conf.erb'),
+    ensure  => 'file',
+    owner   => $user,
+    group   => $group,
+    mode    => '0660',
+  }
+
   $main = {
     disable_warnings           => 'deprecations',
     logdir                     => '/var/log/puppet',

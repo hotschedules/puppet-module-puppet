@@ -2,9 +2,9 @@
 <%= @x_conf_hash['main'].each { |k,v| "#{k} #{v}"   } -%>
 
 [agent]
-<%= @x_conf_hash['agent'].each { |k,v| "#{k} #{v}"  } -%>
+<%# @x_conf_hash['agent'].each { |k,v| "#{k} #{v}"  } -%>
 
 <% if @instance_role == "puppet" %>
 [master]
-<%= @x_conf_hash['master'].each { |k,v| "#{k} #{v}" } -%>
+<%# @x_conf_hash['master'].each { |k,v| "#{k} #{v}" } -%>
 <% end %>

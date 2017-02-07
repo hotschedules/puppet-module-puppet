@@ -15,11 +15,13 @@ class puppet (
   $master_hash                = getvar("::puppet::params::default::master"),
   $pkg                        = getvar("::puppet::params::default::pkg"),
   $version                    = getvar("::puppet::params::default::version"),
+  $agent_defaults             = getvar("::puppet::params::default::agent_defaults"),
 ) inherits puppet::params {
 
   validate_absolute_path      ( $configfile )
   validate_string             ( $pkg )
   validate_string             ( $version )
+  validate_hash               ( $agent_defaults )
   
   # Merge config hashes
   $x_conf_hash = {
@@ -38,6 +40,7 @@ class puppet (
   validate_bool 				  ( $x_conf_hash['agent']["autoflush"]                  )
   validate_string 				( $x_conf_hash['agent']["certname"]                   )
   validate_integer 		    ( $x_conf_hash['agent']["configtimeout"]              )
+  validate_string         ( $x_conf_hash['agent']["disable_warnings"]           )
   validate_string 			  ( $x_conf_hash['agent']["environment"]                )
   validate_bool 					( $x_conf_hash['agent']["listen"]                     )
   validate_bool 			    ( $x_conf_hash['agent']["pluginsync"]                 )
