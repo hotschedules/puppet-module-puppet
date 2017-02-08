@@ -1,5 +1,5 @@
 # == Class puppet::params::defaults
-class puppet::params::defaults {
+class puppet::params::default {
   $enabled    = true
 
   $svc        = 'puppet'
