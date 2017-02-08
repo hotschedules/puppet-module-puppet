@@ -1,4 +1,4 @@
-# == Class puppet::params::defaults
+# == Class puppet::params::default
 class puppet::params::default {
   $enabled    = true
 

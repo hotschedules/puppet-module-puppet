@@ -15,6 +15,7 @@ class puppet::config inherits puppet {
     $owner          = $user,
     $group          = $group,
     $mode           = '0660',
+    $configfile     = $configfile,
   ) {
     file { "${configfile}":
       content       => $content,
@@ -22,7 +23,8 @@ class puppet::config inherits puppet {
       owner         => $owner,
       group         => $group,
       mode          => $mode
-    }
+    },
+    notify          => Service['puppet']
   }
 
   # Create Puppet agent configuration
