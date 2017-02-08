@@ -7,18 +7,21 @@
 # === Parameters
 # ---
 #
-
 class puppet (
+
   $agent_hash                 = getvar("::puppet::params::default::agent"),
+  $content                    = getvar("::puppet::params::default::content"),
   $configfile                 = getvar("::puppet::params::default::configfile"),
   $main_hash                  = getvar("::puppet::params::default::main"),
   $master_hash                = getvar("::puppet::params::default::master"),
   $pkg                        = getvar("::puppet::params::default::pkg"),
   $version                    = getvar("::puppet::params::default::version"),
   $agent_defaults             = getvar("::puppet::params::default::agent_defaults"),
+
 ) inherits puppet::params {
 
   validate_absolute_path      ( $configfile )
+  validate_string             ( $content )
   validate_string             ( $pkg )
   validate_string             ( $version )
   validate_hash               ( $agent_defaults )

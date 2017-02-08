@@ -1,5 +1,5 @@
-# == Class puppet::params::default
-class puppet::params::default {
+# == Class puppet::params::defaults
+class puppet::params::defaults {
   $enabled    = true
 
   $svc        = 'puppet'
@@ -13,8 +13,8 @@ class puppet::params::default {
   $agent_defaults = {
     content => template('puppet/puppet.conf.erb'),
     ensure  => 'file',
-    owner   => $user,
-    group   => $group,
+    owner   => 'puppet',
+    group   => 'puppet',
     mode    => '0660',
   }
 

@@ -10,7 +10,7 @@
 class puppet::config inherits puppet {
 
   define puppetconf(
-    $content        = template('puppet/puppet.conf.erb'),
+    $content        = $content,
     $ensure         = "file",
     $owner          = $user,
     $group          = $group,
@@ -25,7 +25,7 @@ class puppet::config inherits puppet {
     }
   }
 
-  # Create Puppet conf
+  # Create Puppet agent configuration
   create_resources(puppetconf, $agent_defaults, $x_conf_hash )
 
 }
