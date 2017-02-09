@@ -16,6 +16,7 @@ class puppet::config inherits puppet {
     $group          = $group,
     $mode           = '0660',
     $configfile     = $configfile,
+    $svc            = $svc,
   ) {
     file { "${configfile}":
       content       => $content,
@@ -24,10 +25,10 @@ class puppet::config inherits puppet {
       group         => $group,
       mode          => $mode
     },
-    notify          => Service['puppet']
+    notify          => Service[$svc]
   }
 
   # Create Puppet agent configuration
-  create_resources(puppetconf, $agent_defaults, $x_conf_hash )
+  create_resources(puppetconf, $x_conf_hash,$agent_defaults)
 
 }
