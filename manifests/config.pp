@@ -10,25 +10,27 @@
 class puppet::config inherits puppet {
 
   define puppetconf(
-    $content        = $content,
+    $agent          = undef,
+    $content        = template('puppet/puppet.conf.erb'),
     $ensure         = "file",
-    $owner          = $user,
     $group          = $group,
+    $main           = undef,
+    $master         = undef,
     $mode           = '0660',
-    $configfile     = $configfile,
-    $svc            = $svc,
+    $owner          = $user,
+    $svcname        = 'puppet'
   ) {
-    file { "${configfile}":
+    file { "/etc/puppet/puppet.conf":
       content       => $content,
       ensure        => $ensure,
-      owner         => $owner,
       group         => $group,
-      mode          => $mode
-    },
-    notify          => Service[$svc]
+      mode          => $mode,
+      owner         => $owner,
+      notify        => Service[$svcname]
+    }
   }
 
   # Create Puppet agent configuration
-  create_resources(puppetconf, $x_conf_hash,$agent_defaults)
+  create_resources(puppetconf, $x_conf_hash)
 
 }

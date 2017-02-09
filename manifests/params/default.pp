@@ -1,22 +1,21 @@
-# == Class puppet::params::default
+# vim: tabstop=2 expandtab shiftwidth=2 softtabstop=2 foldmethod=marker
+#
+# == Class: puppet::params::default {
+#
+# Sets default puppet parameters
+#
+# PRIVATE CLASS: do not call directly
+#
 class puppet::params::default {
-  $enabled    = true
 
-  $svc        = 'puppet'
-  $pkg        = 'puppet'
-
-  $version    = '3.8.7-1.el6'
-  $user       = 'puppet'
+  $content    = template('puppet/puppet.conf.erb') 
   $group      = 'puppet'
-  $configfile = '/etc/puppet/puppet.conf'
-
-  $agent_defaults = {
-    content => template('puppet/puppet.conf.erb'),
-    ensure  => 'file',
-    owner   => 'puppet',
-    group   => 'puppet',
-    mode    => '0660',
-  }
+  $pkg        = 'puppet'
+  $svcname    = 'puppet'
+  $svcensure  = true
+  $svcenable  = true
+  $user       = 'puppet'
+  $version    = '3.8.7-1.el6'
 
   $main = {
     disable_warnings           => 'deprecations',

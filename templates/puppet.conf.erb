@@ -1,10 +1,16 @@
 [main]
-<%= @x_conf_hash['main'].each { |k,v| "#{k} #{v}"   } -%>
+<% @main.keys.sort.each do |k,v| -%>
+<%=  "#{k} = " + v  %>
+<% end -%>
 
 [agent]
-<%# @x_conf_hash['agent'].each { |k,v| "#{k} #{v}"  } -%>
+<% @agent.keys.sort.each do |k,v| -%>
+<%=  "#{k} = " + v  %>
+<% end -%>
 
-<% if @instance_role == "puppet" %>
+<% if @instance_role == "puppet" -%>
 [master]
-<%# @x_conf_hash['master'].each { |k,v| "#{k} #{v}" } -%>
-<% end %>
+<% @master.keys.sort.each do |k,v| -%>
+<%=  "#{k} = " + v  %>
+<% end -%>
+<% end -%>
