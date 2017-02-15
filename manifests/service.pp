@@ -14,4 +14,10 @@ class puppet::service inherits puppet {
     hasrestart  => true,
   }
 
+  if %{::instance_role} == 'puppet' {
+    service { $mastersvc:
+    
+    }
+
+
 }

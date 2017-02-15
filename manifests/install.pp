@@ -5,8 +5,13 @@
 #
 # Installs the Puppet Agent
 #
-class puppet::install inherits puppet
-  {
+class puppet::install inherits puppet {
     ensure_packages( $pkg, { ensure => $version })
+
+  if %{::instance_role} == 'puppet' {
+    ensure_packages( $masterpkg, {
+      ensure => $version,
+    })
+  }
 }
 
