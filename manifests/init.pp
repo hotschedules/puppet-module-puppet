@@ -84,6 +84,7 @@ class puppet (
     validate_string         ( $x_master["ssl_client_verify_header"]  )
   }
 
+
   $x_conf_hash = {
     agentconf => {
         main    => $x_main,
