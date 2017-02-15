@@ -11,7 +11,7 @@ class puppet::config inherits puppet {
 
   define puppetconf(
     $agent          = undef,
-    $content        = template('puppet/puppet.conf.erb'),
+    $content        = template('puppet/etc/puppet/puppet.conf.erb'),
     $ensure         = "file",
     $group          = $group,
     $main           = undef,

@@ -85,4 +85,11 @@ class puppet (
   contain 'puppet::config'
   contain 'puppet::service'
 
+  if %{::instance_role} == 'puppet' {
+    contain "${name}::r10k"
+    contain "${name}::hiera"
+    if $passenger {
+      contain "${name}::passenger"
+    }
+  }
 }
