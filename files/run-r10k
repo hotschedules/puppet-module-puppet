@@ -1,0 +1,73 @@
+#!/bin/bash
+
+ME=$(basename $0)
+LOCKFILE=/var/lock/$ME.lck
+NOW=$(date '+%s')
+SAFE=300 # 5 minutes
+BRANCH=dev
+FORCE=false
+USER=puppet
+
+usage_exit() {
+  RET=${1:-0}
+  MSG="Usage:
+    $ME [-h|--help] [-f|--force] [-b <branch>|--branch <branch>]
+          -h|--help     Print this help and exit.
+          -f|--force    Kill any existing run and run again immediately.
+          -b|--branch   Checkout <branch> instead of the default '$BRANCH'."
+
+  if [ $RET = 0 ] ; then
+    echo "$MSG"
+  else
+    echo "$MSG" >&2
+  fi
+
+  exit $RET
+}
+
+ARGS=$(getopt -o 'fb:' -l 'force,branch:' -n "$ME" -- "$@")
+if [ $? != 0 ] ; then usage_exit 22 ; fi
+# Note the quotes around '$ARGS': they are essential!
+eval set -- "$ARGS"
+unset ARGS
+
+while true ; do
+  case "$1" in
+    -h|--help) usage_exit 0 ;;
+    -f|--force) FORCE=true ; shift ;;
+    -b|--branch) BRANCH="$2" ; shift 2 ;;
+    --) shift ; break ;;
+    *) usage_exit 22 ;;
+  esac
+done
+if [ $# -gt 0 ] ; then usage_exit 22 ; fi  # No non-option args allowed
+
+# XXX Wondering if all this lockfile jazz can be thrown away to use /proc stuff instead
+# e.g. R10K_PROCS=$(grep -lwaz /usr/bin/r10k /proc/[123456789]*/cmdline | cut -f3 -d/) or some such
+# For reference, /proc/?/cmdline looks like this (the @ signs being NULLs):
+# su^@-l^@puppet^@-c^@exec /usr/bin/r10k deploy environment -v -t -p dev^@
+if [ -f "$LOCKFILE" ] ; then
+  OLDPID=$(cat "$LOCKFILE")
+  if grep -qw "$0" /proc/"$OLDPID"/cmdline ; then  # Old job is running, check to see if TOO old.
+    if [ "$FORCE" = true ] ; then
+      kill "$OLDPID"
+    else
+      TS=$(stat --printf '%Y' "$LOCKFILE")
+      RUNNING_FOR=$(echo $NOW - $TS | bc)  # Bash integers overflow too easily - use bc instead :-/
+      [ "$RUNNING_FOR" -lt $SAFE ] && exit 0
+      echo "Warning:  Old r10k process with pid $OLDPID has been running for over 5 minutes - killing it." >&2
+      kill "$OLDPID"
+    fi
+    sleep 2  # Give the shell wrapping the old run (if still around) time to clean up it's own lockfile
+  fi  # Else lockfile is stale and PID is reused by another proc, so OK to remove lockfile below
+fi
+
+# Whee, should be safe to run now :)
+rm -f "$LOCKFILE"  # For grins...
+trap "rm -f $LOCKFILE" EXIT
+# Note we exec below to ensure the lockfile actually contains the right PID
+su -l "$USER" -c "exec /usr/bin/r10k deploy environment -t -p $BRANCH" >>"/var/log/run-r10k-$BRANCH.log" 2>&1 &
+BG_PID=$!
+echo -n "$BG_PID" > "$LOCKFILE"
+wait "$BG_PID"
+exit $?

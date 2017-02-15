@@ -16,8 +16,10 @@ class puppet::service inherits puppet {
 
   if %{::instance_role} == 'puppet' {
     service { $mastersvc:
-    
+      ensure      => $mastersvcensure, 
+      enable      => $mastersvcenable,
+      hasrestart  => true,
     }
-
+  }
 
 }
