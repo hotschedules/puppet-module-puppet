@@ -26,10 +26,10 @@ class puppet::params::master::default {
   # http://docs.puppetlabs.com/hiera/1/puppet.html#limitations
   # https://tickets.puppetlabs.com/browse/HI-118
   #
-  # $settings = hiera_hash('puppetmaster::settings',      {})
-  $r10k     = hiera_hash('puppetmaster::r10k',          {})
-  $remotes  = hiera_hash('puppetmaster::r10k::remotes', {})
-  $hiera    = hiera_hash('puppetmaster::hiera',         {})
+  # $settings = hiera_hash('puppet::master::settings',      {})
+  $r10k     = hiera_hash('puppet::master::r10k',          {})
+  $remotes  = hiera_hash('puppet::master::r10k::remotes', {})
+  $hiera    = hiera_hash('puppet::master::hiera',         {})
 
   $passenger = false
 
