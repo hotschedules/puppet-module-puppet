@@ -1,9 +1,10 @@
-# vim: tabstop=2 expandtab shiftwidth=2 softtabstop=2 foldmethod=marker smartindent
+# vim: tabstop=2 expandtab shiftwidth=2 softtabstop=2 foldmethod=marker
 #
-# == Class: puppetmaster::params
-# ---
+# == Class: puppet::params::agent::default {
 #
-# - Provides Puppet Master parameter defaults
+# Sets default puppet parameters
+#
+# PRIVATE CLASS: do not call directly
 #
 class puppet::params::master::default {
 
@@ -20,13 +21,6 @@ class puppet::params::master::default {
     ssl_client_verify_header	 => 'SSL_CLIENT_VERIFY', 
   }
 
-  # NOTE: hiera_hash does not work as expected in a parameterized class
-  #   definition; so we call it here.
-  #
-  # http://docs.puppetlabs.com/hiera/1/puppet.html#limitations
-  # https://tickets.puppetlabs.com/browse/HI-118
-  #
-  # $settings = hiera_hash('puppet::master::settings',      {})
   $r10k     = hiera_hash('puppet::master::r10k',          {})
   $remotes  = hiera_hash('puppet::master::r10k::remotes', {})
   $hiera    = hiera_hash('puppet::master::hiera',         {})
@@ -34,5 +28,3 @@ class puppet::params::master::default {
   $passenger = false
 
 }
-
-

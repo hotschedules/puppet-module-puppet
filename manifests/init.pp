@@ -1,26 +1,23 @@
 # vim: tabstop=2 expandtab shiftwidth=2 softtabstop=2 foldmethod=marker
 #
-# == Class: puppet
+# == Class: puppet::init
 #
-# Full description of class puppet here.
-#
-# === Parameters
-# ---
+# Configures Puppet agent and Puppet master
 #
 class puppet (
 
   $agent_hash      = getvar("::puppet::params::default::agent"),
-  $agentsvcenable  = getvar("::puppet::params::default::agentsvcenable"),
-  $agentsvcensure  = getvar("::puppet::params::default::agentsvcensure"),
-  $agentsvcname    = getvar("::puppet::params::default::agentsvcname"),
-  $hieramerge      = getvar("::puppet::params::default::hieramerge"),,
-  $main_hash       = getvar("::puppet::params::default::main"),
-  $master_hash     = getvar("::puppet::params::default::master"),
-  $mastersvcenable = getvar("::puppet::params::default::mastersvcenable"),
-  $mastersvcensure = getvar("::puppet::params::default::mastersvcensure"),
-  $mastersvcname   = getvar("::puppet::params::default::mastersvcname"),
-  $pkg             = getvar("::puppet::params::default::masterpkg"),
-  $version         = getvar("::puppet::params::default::version"),
+  $agentsvcenable  = getvar("::puppet::params::default::agent::svcenable"),
+  $agentsvcensure  = getvar("::puppet::params::default::agent::svcensure"),
+  $agentsvcname    = getvar("::puppet::params::default::agent::svcname"),
+  $hieramerge      = getvar("::puppet::params::default::agent::hieramerge"),,
+  $main_hash       = getvar("::puppet::params::default::agent::main"),
+  $master_hash     = getvar("::puppet::params::default::master::master"),
+  $mastersvcenable = getvar("::puppet::params::default::master::svcenable"),
+  $mastersvcensure = getvar("::puppet::params::default::master::svcensure"),
+  $mastersvcname   = getvar("::puppet::params::default::master::svcname"),
+  $pkg             = getvar("::puppet::params::default::master::pkg"),
+  $version         = getvar("::puppet::params::default::master::version"),
 
 ) inherits puppet::params {
 
@@ -69,20 +66,6 @@ class puppet (
   validate_absolute_path  ( $x_main["logdir"]                      )
   validate_absolute_path  ( $x_main["rundir"]                      )
   validate_string         ( $x_main["ssldir"]                      )
-  
-  if %{::instance_role} == 'puppet' {
-    # [master] section parameters
-    validate_bool           ( $x_master["autosign"]                  )
-    validate_string         ( $x_master["certname"]                  )
-    validate_string         ( $x_master["dns_alt_names"]             )
-    validate_string         ( $x_master["environment"]               )
-    validate_integer        ( $x_master["filetimeout"]               )
-    validate_string         ( $x_master["manifest"]                  )
-    validate_string         ( $x_master["modulepath"]                )
-    validate_bool           ( $x_master["pluginsync"]                )
-    validate_string         ( $x_master["ssl_client_header"]         )
-    validate_string         ( $x_master["ssl_client_verify_header"]  )
-  }
 
 
   $x_conf_hash = {
@@ -93,19 +76,35 @@ class puppet (
     },
   }
 
-  class { '::puppet::install': } ->
-  class { '::puppet::config':  } ~>
-  class { '::puppet::service': }
+  class { '::puppet::agent::install': } ->
+  class { '::puppet::agent::config':  } ~>
+  class { '::puppet::agent::service': }
 
-  contain 'puppet::install'
-  contain 'puppet::config'
-  contain 'puppet::service'
+  contain 'puppet::agent::install'
+  contain 'puppet::agent::config'
+  contain 'puppet::agent::service'
 
   if %{::instance_role} == 'puppet' {
-    contain "${name}::r10k"
-    contain "${name}::hiera"
+    validate_bool           ( $x_master["autosign"]                  )
+    validate_string         ( $x_master["certname"]                  )
+    validate_string         ( $x_master["dns_alt_names"]             )
+    validate_string         ( $x_master["environment"]               )
+    validate_integer        ( $x_master["filetimeout"]               )
+    validate_string         ( $x_master["manifest"]                  )
+    validate_string         ( $x_master["modulepath"]                )
+    validate_bool           ( $x_master["pluginsync"]                )
+    validate_string         ( $x_master["ssl_client_header"]         )
+    validate_string         ( $x_master["ssl_client_verify_header"]  )
+
+    class { '::puppet::master::install': } ->
+    class { '::puppet::master::config':  } ~>
+    class { '::puppet::master::service': }
+
+    contain "puppet::master::r10k"
+    contain "puppet::master::hiera"
+
     if $passenger {
-      contain "${name}::passenger"
+      contain "puppet::master::passenger"
     }
   }
 }

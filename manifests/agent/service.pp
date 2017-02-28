@@ -6,12 +6,12 @@
 #
 # PRIVATE CLASS: do not call directly
 #
-class puppet::service inherits puppet {
-  contain "puppet::agent::config"
 
   if %{::instance_role} == 'puppet' {
-    contain "puppet::params::master::default"
+    service { $mastersvc:
+      ensure      => $mastersvcensure, 
+      enable      => $mastersvcenable,
+      hasrestart  => true,
+    }
   }
 
-  contain "puppet::master::config"
-}

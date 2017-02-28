@@ -5,11 +5,16 @@
 # Installs puppetmaster 
 #
 # PRIVATE CLASS: do not call directly
-class puppet::params {
-  contain "puppet::params::agent::default"
 
-  if %{::instance_role} == 'puppet' {
-    contain "puppet::params::master::default"
-  }
+class puppet::master::install(
+
+  $pkg      = $::puppet::master::pkg,
+  $version  = $::puppet::master::version,
+
+) {
+
+  ensure_packages( $pkg, {
+    ensure => $version,
+  })
+
 }
-

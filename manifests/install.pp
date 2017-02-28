@@ -1,18 +1,16 @@
 # vim: tabstop=2 expandtab shiftwidth=2 softtabstop=2 foldmethod=marker
 #
-# == Class: fluentd::params::redhat
+# == Class: puppet::install {
 #
-# Sets default {fluentd}[http://fluentd.org/] parameters for the RedHat OS family
+# Installs puppet packages
 #
 # PRIVATE CLASS: do not call directly
+#
 
 class puppet::install inherits puppet {
-    ensure_packages( $pkg, { ensure => $version })
+  contain "puppet::agent::install"
 
   if %{::instance_role} == 'puppet' {
-    ensure_packages( $masterpkg, {
-      ensure => $version,
-    })
+    contain "puppet::master::install"
   }
 }
-

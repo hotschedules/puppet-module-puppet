@@ -1,6 +1,6 @@
 # vim: tabstop=2 expandtab shiftwidth=2 softtabstop=2 foldmethod=marker
 #
-# == Class: puppet::params::default {
+# == Class: puppet::params::agent::default {
 #
 # Sets default puppet parameters
 #
@@ -8,21 +8,14 @@
 #
 class puppet::params::agent::default {
 
-  $content         = template('puppet/etc/puppet/puppet.conf.erb') 
-  $group           = 'puppet'
-  $agentpkg        = 'puppet'
-  $agentsvcname    = 'puppet'
-  $agentsvcensure  = true
-  $agentsvcenable  = true
+  $content    = template('puppet/etc/puppet/puppet.conf.erb') 
+  $group      = 'puppet'
+  $pkg        = 'puppet'
+  $svcname    = 'puppet'
+  $svcensure  = true
+  $svcenable  = true
   $user       = 'puppet'
   $version    = '3.8.7-1.el6'
-
-  $main = {
-    disable_warnings           => 'deprecations',
-    logdir                     => '/var/log/puppet',
-    rundir                     => '/var/run/puppet',
-    ssldir                     => '$vardir/ssl',
-  }
 
   $agent = {
     autoflush 				         => true,

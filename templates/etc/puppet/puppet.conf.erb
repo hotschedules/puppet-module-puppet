@@ -1,18 +1,18 @@
 [main]
-<% main_hash = scope.function_hiera_hash(['puppet::main']) -%>
+<% main_hash = scope.function_hiera_hash(['puppet::main::params']) -%>
 <% main_hash.keys.sort.each do |k,v| -%>
 <%= "#{k} = #{main_hash[k]}" %>
 <% end -%>
 
 [agent]
-<% agent_hash = scope.function_hiera_hash(['puppet::agent']) -%>
+<% agent_hash = scope.function_hiera_hash(['puppet::agent::params']) -%>
 <% agent_hash.keys.sort.each do |k| -%>
 <%= "#{k} = #{agent_hash[k]}" %>
 <% end -%>
 
 <% if @instance_role == "puppet" -%>
 [master]
-  <% master_hash = scope.function_hiera_hash(['puppet::master']) -%>
+  <% master_hash = scope.function_hiera_hash(['puppet::master::params']) -%>
   <% master_hash.keys.sort.each do |k| -%>
 <%= "#{k} = #{master_hash[k]}" %>
 <% end -%>
