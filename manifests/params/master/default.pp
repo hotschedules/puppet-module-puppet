@@ -1,8 +1,8 @@
-# vim: tabstop=2 expandtab shiftwidth=2 softtabstop=2 foldmethod=marker
+# vim: tabstop=2 expandtab shiftwidth=2 softtabstop=2 foldmethod=marker smartindent
 #
 # == Class: puppet::params::agent::default {
 #
-# Sets default puppet parameters
+# Sets default puppet master parameters
 #
 # PRIVATE CLASS: do not call directly
 #

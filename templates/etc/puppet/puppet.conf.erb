@@ -1,6 +1,5 @@
 [main]
-<% main_hash = scope.function_hiera_hash(['puppet::main::params']) -%>
-<% main_hash.keys.sort.each do |k,v| -%>
+<% @main_hash.keys.sort.each do |k,v| -%>
 <%= "#{k} = #{main_hash[k]}" %>
 <% end -%>
 

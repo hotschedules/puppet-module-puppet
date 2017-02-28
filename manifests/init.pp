@@ -1,4 +1,4 @@
-# vim: tabstop=2 expandtab shiftwidth=2 softtabstop=2 foldmethod=marker
+# vim: tabstop=2 expandtab shiftwidth=2 softtabstop=2 foldmethod=marker smartindent
 #
 # == Class: puppet::init
 #
@@ -6,18 +6,18 @@
 #
 class puppet (
 
-  $agent_hash      = getvar("::puppet::params::default::agent"),
-  $agentsvcenable  = getvar("::puppet::params::default::agent::svcenable"),
-  $agentsvcensure  = getvar("::puppet::params::default::agent::svcensure"),
-  $agentsvcname    = getvar("::puppet::params::default::agent::svcname"),
-  $hieramerge      = getvar("::puppet::params::default::agent::hieramerge"),
-  $main_hash       = getvar("::puppet::params::default::agent::main"),
-  $master_hash     = getvar("::puppet::params::default::master::master"),
-  $mastersvcenable = getvar("::puppet::params::default::master::svcenable"),
-  $mastersvcensure = getvar("::puppet::params::default::master::svcensure"),
-  $mastersvcname   = getvar("::puppet::params::default::master::svcname"),
-  $pkg             = getvar("::puppet::params::default::master::pkg"),
-  $version         = getvar("::puppet::params::default::master::version")
+  $agent_hash      = getvar("::puppet::params::agent::default::agent"),
+  $agentsvcenable  = getvar("::puppet::params::agent::default::svcenable"),
+  $agentsvcensure  = getvar("::puppet::params::agent::default::svcensure"),
+  $agentsvcname    = getvar("::puppet::params::agent::default::svcname"),
+  $hieramerge      = getvar("::puppet::params::agent::default::hieramerge"),
+  $main_hash       = getvar("::puppet::params::agent::default::main"),
+  $master_hash     = getvar("::puppet::params::master::default::master"),
+  $mastersvcenable = getvar("::puppet::params::master::default::svcenable"),
+  $mastersvcensure = getvar("::puppet::params::master::default::svcensure"),
+  $mastersvcname   = getvar("::puppet::params::master::default::svcname"),
+  $pkg             = getvar("::puppet::params::master::default::pkg"),
+  $version         = getvar("::puppet::params::master::default::version")
 
 ) inherits puppet::params {
 
@@ -38,13 +38,11 @@ class puppet (
   # Merge config hashes
   if $hieramerge {
     $x_agent  = hiera_hash('puppet::agent::params',  $agent_hash)
-    $x_main   = hiera_hash('puppet::main::params',   $main_hash)
     if $::instance_role == 'puppet' {
       $x_master = hiera_hash('puppet::master::params', $master_hash)
     }
   } else {
     $x_agent  = $agent_hash
-    $x_main   = $main_hash
     if $::instance_role == 'puppet' {
       $x_master = $master_hash
     }
@@ -62,10 +60,10 @@ class puppet (
   validate_bool 					( $x_agent["splay"]                      )
 
   # [main] section parameters
-  validate_string         ( $x_main["disable_warnings"]            )
-  validate_absolute_path  ( $x_main["logdir"]                      )
-  validate_absolute_path  ( $x_main["rundir"]                      )
-  validate_string         ( $x_main["ssldir"]                      )
+  validate_string         ( $main_hash["disable_warnings"]            )
+  validate_absolute_path  ( $main_hash["logdir"]                      )
+  validate_absolute_path  ( $main_hash["rundir"]                      )
+  validate_string         ( $main_hash["ssldir"]                      )
 
 
   $x_conf_hash = {
