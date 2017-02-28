@@ -100,6 +100,10 @@ class puppet (
     class { '::puppet::master::config':  } ~>
     class { '::puppet::master::service': }
 
+  contain 'puppet::master::install'
+  contain 'puppet::master::config'
+  contain 'puppet::master::service'
+
     contain "puppet::master::r10k"
     contain "puppet::master::hiera"
 

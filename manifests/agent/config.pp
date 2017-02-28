@@ -25,7 +25,7 @@ class puppet::agent::config inherits puppet {
       group         => $group,
       mode          => $mode,
       owner         => $owner,
-      notify        => Service[$svcname]
+      notify        => Service[$agentsvcname]
     }
   }
 

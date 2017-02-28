@@ -1,0 +1,204 @@
+# vim: tabstop=2 expandtab shiftwidth=2 softtabstop=2 foldmethod=marker smartindent
+#
+# == Class: puppet::master::r10k
+# ---
+#
+# Manages the Puppet Master r10k configuration
+#
+# === Parameters
+# ---
+#
+# [*defaults*]
+# - NOTE - Use puppet::master::r10k via Hiera to override any defaults
+# - Type - Hash
+# - Default
+#   {
+#     'enabled'     => true,
+#     'usessh'      => true,
+#     'autoupdate'  => true,
+#     'timestamp'   => true,
+#     'updatecmd'   => "r10k deploy environment ${::environment}",
+#     'interval'    => '*/1',
+#     'configfile'  => '/etc/r10k.yaml',
+#     'cachedir'    => '/var/cache/r10k',
+#     'basedir'     => '/etc/puppet/environments',
+#   }
+
+class puppet::master::r10k(
+
+  $defaults = {
+    'enabled'       => true,
+    'usessh'        => true,
+    'autoupdate'    => true,
+    'timestamp'     => true,
+    'timestampcmd'  => 'echo `date +\%Y-\%m-\%d-\%H:\%M:\%S` >> /var/log/r10k.log',
+    'updatecmd'     => "r10k deploy environment ${::environment} -v -t >> /var/log/r10k.log 2>&1",
+    'cronuser'      => 'puppet',
+    'interval'      => '*/1',
+    'configfile'    => '/etc/r10k.yaml',
+    'cachedir'      => '/var/cache/r10k',
+    'basedir'       => "${::puppet::master::configdir}/environments",
+  },
+
+  $user     = $::puppet::master::user,
+  $group    = $::puppet::master::group,
+  $homedir  = $::puppet::master::vardir, # user home should be var dir
+
+) inherits puppet::master::config {
+
+  # Require logrotate module
+  Class['logrotate'] -> Class[$name]
+
+  $mergedsettings = merge($defaults, $::puppet::master::r10k)
+
+  $enabled      = $mergedsettings['enabled']
+  $usessh       = $mergedsettings['usessh']
+  $autoupdate   = $mergedsettings['autoupdate']
+  $timestamp    = $mergedsettings['timestamp']
+  $interval     = $mergedsettings['interval']
+  $configfile   = $mergedsettings['configfile']
+  $cachedir     = $mergedsettings['cachedir']
+  $basedir      = $mergedsettings['basedir']
+  $timestampcmd = $mergedsettings['timestampcmd']
+  $updatecmd    = $mergedsettings['updatecmd']
+  $cronuser     = $mergedsettings['cronuser']
+  $remotes      = $mergedsettings['remotes']
+
+  validate_bool           ( $enabled      )
+  validate_bool           ( $usessh       )
+  validate_bool           ( $autoupdate   )
+  validate_bool           ( $timestamp    )
+  validate_string         ( $interval     )
+  validate_absolute_path  ( $configfile   )
+  validate_absolute_path  ( $cachedir     )
+  validate_absolute_path  ( $basedir      )
+  validate_string         ( $timestampcmd )
+  validate_string         ( $updatecmd    )
+  validate_string         ( $cronuser     )
+  validate_hash           ( $remotes      )
+
+  if $enabled {
+
+    ensure_resource('clabs::install', ['r10k', 'SystemTimer', 'hiera-multiyaml'],
+      { 'provider' => 'gem'}
+    )
+
+    clabs::dir { [
+      $cachedir,
+      $basedir,
+    ]:
+      owner     => $user,
+      group     => $group,
+      mode      => '0750',
+      require   => Clabs::Install['r10k'];
+    }
+
+    clabs::template {
+      $configfile:
+        owner   => $user,
+        group   => 'adm',
+        mode    => '0440',  # secure (may contain passwords)
+        require => Clabs::Install['r10k']
+    }
+
+    # puppetmaster user
+    user { $user:
+      password  => '*', # Disable password based login
+      shell     => '/bin/bash',
+    }
+
+    # SSH keys
+    if $usessh {
+      validate_hash   ( $mergedsettings['ssh']            )
+      validate_string ( $mergedsettings['ssh']['private'] )
+      validate_string ( $mergedsettings['ssh']['public']  )
+
+      $ssh_private  = $mergedsettings['ssh']['private']
+      $ssh_public   = $mergedsettings['ssh']['public']
+
+      clabs::dir {
+        "${homedir}/.ssh":
+          owner => $user,
+          group => $group,
+          mode  => '0700',
+      }
+
+      Clabs::Config {
+        owner   => $user,
+        group   => $group,
+        require => Clabs::Dir["${homedir}/.ssh"]
+      }
+
+      ensure_resource('clabs::config', "${homedir}/.ssh/id_rsa", {
+        'mode'    => '0400',
+        'content' => $ssh_private,
+      })
+
+      ensure_resource('clabs::config', "${homedir}/.ssh/id_rsa.pub", {
+        'mode'    => '0444',
+        'content' => $ssh_public,
+      })
+    }
+
+    # r10k time stamping
+    if $timestamp {
+      cron { 'r10k-timestamp':
+        ensure  => $autoupdate ? {
+          true    => 'present',
+          default => 'absent',
+        },
+        command => $timestampcmd,
+        user    => $user,
+        minute  => $interval,
+      }
+    }
+
+    # r10k Automatic code updates
+    cron { 'r10k':
+      ensure  => $autoupdate ? {
+        true    => 'present',
+        default => 'absent',
+      },
+      command => $updatecmd,
+      user    => $cronuser,
+      minute  => $interval,
+      require => $timestamp ? {
+        true    => [ Cron['r10k-timestamp'], File['/usr/local/bin/run-r10k'], ],
+        default => undef,
+      },
+    }
+  }
+
+  file { '/usr/local/bin/run-r10k':
+    ensure => present,
+    source => 'puppet:///modules/puppetmaster/run-r10k',
+    owner  => root,
+    group  => root,
+    mode   => '0755'
+  }
+
+  file { '/var/log/r10k.log':
+    ensure  => 'present',
+    owner   => $user,
+    group   => $group,
+    mode    => '0664',
+  }
+
+  logrotate::rule { 'r10k':
+    ensure        => $enabled ? {
+      true    => 'present',
+      default => 'absent',
+    },
+    path          => '/var/log/r10k.log',
+    missingok     => true,
+    ifempty       => false,
+    rotate        => 4,
+    rotate_every  => 'week',
+    compress      => true,
+    create        => true,
+    create_mode   => '0664',
+    create_owner  => $user,
+    create_group  => $group,
+  }
+}
+
