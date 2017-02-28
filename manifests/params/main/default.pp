@@ -6,7 +6,11 @@
 #
 # PRIVATE CLASS: do not call directly
 #
+class puppet::params::main::default {
+
   disable_warnings           => 'deprecations',
   logdir                     => '/var/log/puppet',
   rundir                     => '/var/run/puppet',
   ssldir                     => '$vardir/ssl',
+
+}

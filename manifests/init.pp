@@ -21,12 +21,12 @@ class puppet (
 
 ) inherits puppet::params {
 
-  validate_bool             ( $hieramerge     )
-  validate_string           ( $agentpkg            )
-  validate_string           ( $version        )
-  validate_bool             ( $agentsvcenable      )
-  validate_string           ( $agentsvcname        )
-  validate_bool             ( $agentsvcensure      )
+  validate_string           ( $agentpkg               )
+  validate_bool             ( $agentsvcenable         )
+  validate_string           ( $agentsvcname           )
+  validate_bool             ( $agentsvcensure         )
+  validate_bool             ( $hieramerge             )
+  validate_string           ( $version                )
 
   if $::instance_role == 'puppet' {
     validate_string           ( $masterpkg            )
@@ -37,10 +37,10 @@ class puppet (
   
   # Merge config hashes
   if $hieramerge {
-    $x_agent  = hiera_hash('puppet::agent',  $agent_hash)
-    $x_main   = hiera_hash('puppet::main',   $main_hash)
+    $x_agent  = hiera_hash('puppet::agent::params',  $agent_hash)
+    $x_main   = hiera_hash('puppet::main::params',   $main_hash)
     if $::instance_role == 'puppet' {
-      $x_master = hiera_hash('puppet::master', $master_hash)
+      $x_master = hiera_hash('puppet::master::params', $master_hash)
     }
   } else {
     $x_agent  = $agent_hash
@@ -73,7 +73,7 @@ class puppet (
         main    => $x_main,
         agent   => $x_agent,
         master  => $x_master,
-    },
+    }
   }
 
   class { '::puppet::agent::install': } ->

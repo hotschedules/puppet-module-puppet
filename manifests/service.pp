@@ -7,11 +7,10 @@
 # PRIVATE CLASS: do not call directly
 #
 class puppet::service inherits puppet {
-  contain "puppet::agent::config"
+  contain "puppet::agent::service"
 
   if $::instance_role == 'puppet' {
-    contain "puppet::params::master::default"
+    contain "puppet::master::service"
   }
 
-  contain "puppet::master::config"
 }

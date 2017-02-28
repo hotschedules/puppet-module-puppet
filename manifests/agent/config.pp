@@ -30,7 +30,9 @@ class puppet::agent::config inherits puppet {
   }
 
   # Create Puppet agent configuration
-  create_resources(puppetagentconf, $x_conf_hash)
+  unless $::instance_role == 'puppet' {
+    create_resources(puppetagentconf, $x_conf_hash)
+  }
 
 }
 
