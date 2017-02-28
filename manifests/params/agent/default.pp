@@ -11,11 +11,12 @@ class puppet::params::agent::default {
 
   $content    = template('puppet/etc/puppet/puppet.conf.erb') 
   $group      = 'puppet'
+  $hieramerge = true
   $pkg        = 'puppet'
-  $svcname    = 'puppet'
-  $svcensure  = true
   $svcenable  = true
-  $user       = 'puppet'
+  $svcensure  = true
+  $svcname    = 'puppet'
+  $user       = 'puppeti'
   $version    = '3.8.7-1.el6'
 
   $agent = {

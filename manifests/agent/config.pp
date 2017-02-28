@@ -17,7 +17,7 @@ class puppet::agent::config inherits puppet {
     $master         = undef,
     $mode           = '0660',
     $owner          = $user,
-    $svcname        = 'puppet'
+    $agentsvcname        = 'puppet'
   ) {
     file { "/etc/puppet/puppet.conf":
       content       => $content,

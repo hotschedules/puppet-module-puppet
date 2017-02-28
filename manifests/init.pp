@@ -20,7 +20,7 @@ class puppet (
   $version         = getvar("::puppet::params::master::default::version")
 
 ) inherits puppet::params {
-
+  
   validate_string           ( $agentpkg               )
   validate_bool             ( $agentsvcenable         )
   validate_string           ( $agentsvcname           )
@@ -35,6 +35,7 @@ class puppet (
     validate_bool             ( $mastersvcensure      )
   }
   
+  $x_main = $main_hash
   # Merge config hashes
   if $hieramerge {
     $x_agent  = hiera_hash('puppet::agent::params',  $agent_hash)
@@ -60,10 +61,10 @@ class puppet (
   validate_bool 					( $x_agent["splay"]                      )
 
   # [main] section parameters
-  validate_string         ( $main_hash["disable_warnings"]            )
-  validate_absolute_path  ( $main_hash["logdir"]                      )
-  validate_absolute_path  ( $main_hash["rundir"]                      )
-  validate_string         ( $main_hash["ssldir"]                      )
+  validate_string         ( $x_main["disable_warnings"]            )
+  validate_absolute_path  ( $x_main["logdir"]                      )
+  validate_absolute_path  ( $x_main["rundir"]                      )
+  validate_string         ( $x_main["ssldir"]                      )
 
 
   $x_conf_hash = {
@@ -98,9 +99,9 @@ class puppet (
     class { '::puppet::master::config':  } ~>
     class { '::puppet::master::service': }
 
-  contain 'puppet::master::install'
-  contain 'puppet::master::config'
-  contain 'puppet::master::service'
+    contain 'puppet::master::install'
+    contain 'puppet::master::config'
+    contain 'puppet::master::service'
 
     contain "puppet::master::r10k"
     contain "puppet::master::hiera"

@@ -8,6 +8,11 @@
 #
 class puppet::params::master::default {
 
+  $hiera    = hiera_hash('puppet::master::hiera',         {})
+  $passenger = false
+  $r10k     = hiera_hash('puppet::master::r10k',          {})
+  $remotes  = hiera_hash('puppet::master::r10k::remotes', {})
+
   $master = {
     autosign                   => true,
     certname                   => $::servername,
@@ -20,11 +25,5 @@ class puppet::params::master::default {
     ssl_client_header          => 'SSL_CLIENT_S_DN',
     ssl_client_verify_header	 => 'SSL_CLIENT_VERIFY', 
   }
-
-  $r10k     = hiera_hash('puppet::master::r10k',          {})
-  $remotes  = hiera_hash('puppet::master::r10k::remotes', {})
-  $hiera    = hiera_hash('puppet::master::hiera',         {})
-
-  $passenger = false
 
 }
