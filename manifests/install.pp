@@ -10,7 +10,7 @@
 class puppet::install inherits puppet {
   contain "puppet::agent::install"
 
-  if %{::instance_role} == 'puppet' {
+  if $::instance_role == 'puppet' {
     contain "puppet::master::install"
   }
 }

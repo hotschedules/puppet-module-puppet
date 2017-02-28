@@ -9,7 +9,7 @@
 class puppet::service inherits puppet {
   contain "puppet::agent::config"
 
-  if %{::instance_role} == 'puppet' {
+  if $::instance_role == 'puppet' {
     contain "puppet::params::master::default"
   }
 

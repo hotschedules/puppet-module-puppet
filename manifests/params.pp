@@ -8,7 +8,7 @@
 class puppet::params {
   contain "puppet::params::agent::default"
 
-  if %{::instance_role} == 'puppet' {
+  if $::instance_role == 'puppet' {
     contain "puppet::params::master::default"
   }
 }

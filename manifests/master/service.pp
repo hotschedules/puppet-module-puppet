@@ -2,7 +2,7 @@
 #
 # == Class: puppet::master::service
 #
-# Manages the Puppet service
+# Manages the Puppet Master service
 #
 # PRIVATE CLASS: do not call directly
 #

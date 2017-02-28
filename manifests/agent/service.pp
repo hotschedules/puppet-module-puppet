@@ -1,17 +1,15 @@
 # vim: tabstop=2 expandtab shiftwidth=2 softtabstop=2 foldmethod=marker
 #
-# == Class: puppet::service
+# == Class: puppet::agent::service
 #
-# Manages the Puppet service
+# Manages the Puppet Master service
 #
 # PRIVATE CLASS: do not call directly
 #
-
-  if %{::instance_role} == 'puppet' {
-    service { $mastersvc:
-      ensure      => $mastersvcensure, 
-      enable      => $mastersvcenable,
-      hasrestart  => true,
-    }
+class puppet::agent::service inherits puppet {
+  service { $svc
+    ensure     =>  $svcensure,
+    enable     =>  $svcenable,
+    hasrestart =>  true,
   }
-
+}

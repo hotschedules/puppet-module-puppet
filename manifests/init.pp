@@ -10,14 +10,14 @@ class puppet (
   $agentsvcenable  = getvar("::puppet::params::default::agent::svcenable"),
   $agentsvcensure  = getvar("::puppet::params::default::agent::svcensure"),
   $agentsvcname    = getvar("::puppet::params::default::agent::svcname"),
-  $hieramerge      = getvar("::puppet::params::default::agent::hieramerge"),,
+  $hieramerge      = getvar("::puppet::params::default::agent::hieramerge"),
   $main_hash       = getvar("::puppet::params::default::agent::main"),
   $master_hash     = getvar("::puppet::params::default::master::master"),
   $mastersvcenable = getvar("::puppet::params::default::master::svcenable"),
   $mastersvcensure = getvar("::puppet::params::default::master::svcensure"),
   $mastersvcname   = getvar("::puppet::params::default::master::svcname"),
   $pkg             = getvar("::puppet::params::default::master::pkg"),
-  $version         = getvar("::puppet::params::default::master::version"),
+  $version         = getvar("::puppet::params::default::master::version")
 
 ) inherits puppet::params {
 
@@ -28,7 +28,7 @@ class puppet (
   validate_string           ( $agentsvcname        )
   validate_bool             ( $agentsvcensure      )
 
-  if %{::instance_role} == 'puppet' {
+  if $::instance_role == 'puppet' {
     validate_string           ( $masterpkg            )
     validate_bool             ( $mastersvcenable      )
     validate_string           ( $mastersvcname        )
@@ -39,13 +39,13 @@ class puppet (
   if $hieramerge {
     $x_agent  = hiera_hash('puppet::agent',  $agent_hash)
     $x_main   = hiera_hash('puppet::main',   $main_hash)
-    if %{::instance_role} == 'puppet' {
+    if $::instance_role == 'puppet' {
       $x_master = hiera_hash('puppet::master', $master_hash)
     }
   } else {
     $x_agent  = $agent_hash
     $x_main   = $main_hash
-    if %{::instance_role} == 'puppet' {
+    if $::instance_role == 'puppet' {
       $x_master = $master_hash
     }
   }
@@ -84,7 +84,7 @@ class puppet (
   contain 'puppet::agent::config'
   contain 'puppet::agent::service'
 
-  if %{::instance_role} == 'puppet' {
+  if $::instance_role == 'puppet' {
     validate_bool           ( $x_master["autosign"]                  )
     validate_string         ( $x_master["certname"]                  )
     validate_string         ( $x_master["dns_alt_names"]             )
