@@ -7,6 +7,7 @@
 class puppet (
 
   $agent_hash      = getvar("::puppet::params::agent::default::agent"),
+  $agentpkg        = getvar("::puppet::params::agent::default::pkg"),
   $agentsvcenable  = getvar("::puppet::params::agent::default::svcenable"),
   $agentsvcensure  = getvar("::puppet::params::agent::default::svcensure"),
   $agentsvcname    = getvar("::puppet::params::agent::default::svcname"),
@@ -16,11 +17,12 @@ class puppet (
   $mastersvcenable = getvar("::puppet::params::master::default::svcenable"),
   $mastersvcensure = getvar("::puppet::params::master::default::svcensure"),
   $mastersvcname   = getvar("::puppet::params::master::default::svcname"),
-  $pkg             = getvar("::puppet::params::master::default::pkg"),
+  $masterpkg       = getvar("::puppet::params::master::default::pkg"),
   $version         = getvar("::puppet::params::master::default::version")
 
 ) inherits puppet::params {
   
+  validate_hash             ( $agent_hash
   validate_string           ( $agentpkg               )
   validate_bool             ( $agentsvcenable         )
   validate_string           ( $agentsvcname           )
@@ -35,15 +37,16 @@ class puppet (
     validate_bool             ( $mastersvcensure      )
   }
   
-  $x_main = $main_hash
   # Merge config hashes
   if $hieramerge {
+    $x_main = $main_hash
     $x_agent  = hiera_hash('puppet::agent::params',  $agent_hash)
     if $::instance_role == 'puppet' {
       $x_master = hiera_hash('puppet::master::params', $master_hash)
     }
   } else {
     $x_agent  = $agent_hash
+    $x_main   = $main_hash
     if $::instance_role == 'puppet' {
       $x_master = $master_hash
     }
@@ -66,14 +69,6 @@ class puppet (
   validate_absolute_path  ( $x_main["rundir"]                      )
   validate_string         ( $x_main["ssldir"]                      )
 
-
-  $x_conf_hash = {
-    agentconf => {
-        main    => $x_main,
-        agent   => $x_agent,
-        master  => $x_master,
-    }
-  }
 
   class { '::puppet::agent::install': } ->
   class { '::puppet::agent::config':  } ~>

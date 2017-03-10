@@ -7,7 +7,7 @@
 # PRIVATE CLASS: do not call directly
 #
 class puppet::agent::service inherits puppet {
-  service { $agentsvc:
+  service { 'puppet':
     ensure     =>  $agentsvcensure,
     enable     =>  $agentsvcenable,
     hasrestart =>  true,

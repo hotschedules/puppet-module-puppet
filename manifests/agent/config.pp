@@ -9,15 +9,14 @@
 class puppet::agent::config inherits puppet {
 
   define puppetagentconf(
-    $agent          = undef,
-    $content        = template('puppet/etc/puppet/puppet.conf.erb'),
+    $agent          = $x_agent_hash,
+    $content        = $content,
     $ensure         = "file",
     $group          = $group,
-    $main           = undef,
-    $master         = undef,
+    $main           = $x_main_hash,
+    $master         = $x_master_hash,
     $mode           = '0660',
     $owner          = $user,
-    $agentsvcname        = 'puppet'
   ) {
     file { "/etc/puppet/puppet.conf":
       content       => $content,
@@ -25,13 +24,13 @@ class puppet::agent::config inherits puppet {
       group         => $group,
       mode          => $mode,
       owner         => $owner,
-      notify        => Service[$agentsvcname]
+      notify        => Service['puppet']
     }
   }
 
   # Create Puppet agent configuration
   unless $::instance_role == 'puppet' {
-    create_resources(puppetagentconf, $x_conf_hash)
+    create_resources(puppetagentconf, {})
   }
 
 }

@@ -8,7 +8,7 @@
 #
 class puppet::master::service inherits puppet {
 
-service { $mastersvcname:
+service { 'puppetmaster':
     ensure      => $mastersvcensure,
     enable      => $mastersvcenable,
     hasrestart  => true,
