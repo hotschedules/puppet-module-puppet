@@ -10,7 +10,7 @@ class puppet::master::config inherits puppet {
 
   define puppetmasterconf(
     $agent          = $x_agent_hash,
-    $content        = template('puppet/etc/puppet/puppet.conf.erb'),
+    $content        = template('puppet/etc/puppet/puppetmaster.conf.erb'),
     $ensure         = "file",
     $group          = $group,
     $main           = $x_main_hash,

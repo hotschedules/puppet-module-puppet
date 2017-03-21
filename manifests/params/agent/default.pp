@@ -2,8 +2,7 @@
 #
 # == Class: puppet::params::agent::default {
 #
-# Sets default puppet parameters for agent:w
-
+# Sets default puppet parameters for agent
 #
 # PRIVATE CLASS: do not call directly
 #

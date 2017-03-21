@@ -6,14 +6,14 @@
 #
 class puppet (
 
-  $agent_hash      = getvar("::puppet::params::agent::default::agent"),
+  $agent           = getvar("::puppet::params::agent::default::agent"),
   $agentpkg        = getvar("::puppet::params::agent::default::pkg"),
   $agentsvcenable  = getvar("::puppet::params::agent::default::svcenable"),
   $agentsvcensure  = getvar("::puppet::params::agent::default::svcensure"),
   $agentsvcname    = getvar("::puppet::params::agent::default::svcname"),
   $hieramerge      = getvar("::puppet::params::agent::default::hieramerge"),
-  $main_hash       = getvar("::puppet::params::agent::default::main"),
-  $master_hash     = getvar("::puppet::params::master::default::master"),
+  $main            = getvar("::puppet::params::agent::default::main"),
+  $master          = getvar("::puppet::params::master::default::master"),
   $mastersvcenable = getvar("::puppet::params::master::default::svcenable"),
   $mastersvcensure = getvar("::puppet::params::master::default::svcensure"),
   $mastersvcname   = getvar("::puppet::params::master::default::svcname"),
@@ -22,61 +22,61 @@ class puppet (
 
 ) inherits puppet::params {
   
-  validate_hash             ( $agent_hash
-  validate_string           ( $agentpkg               )
-  validate_bool             ( $agentsvcenable         )
-  validate_string           ( $agentsvcname           )
-  validate_bool             ( $agentsvcensure         )
-  validate_bool             ( $hieramerge             )
-  validate_string           ( $version                )
+  validate_hash             ( $agent            )
+  validate_string           ( $agentpkg         )
+  validate_bool             ( $agentsvcenable   )
+  validate_string           ( $agentsvcname     )
+  validate_bool             ( $agentsvcensure   )
+  validate_bool             ( $hieramerge       )
+  validate_string           ( $version          )
 
   if $::instance_role == 'puppet' {
-    validate_string           ( $masterpkg            )
-    validate_bool             ( $mastersvcenable      )
-    validate_string           ( $mastersvcname        )
-    validate_bool             ( $mastersvcensure      )
+    validate_string         ( $masterpkg        )
+    validate_bool           ( $mastersvcenable  )
+    validate_string         ( $mastersvcname    )
+    validate_bool           ( $mastersvcensure  )
   }
   
+  $x_main = $main
   # Merge config hashes
   if $hieramerge {
-    $x_main = $main_hash
-    $x_agent  = hiera_hash('puppet::agent::params',  $agent_hash)
+    $x_agent  = hiera_hash('puppet::agent',  $agent)
     if $::instance_role == 'puppet' {
-      $x_master = hiera_hash('puppet::master::params', $master_hash)
+      $x_master = hiera_hash('puppet::master', $master)
     }
   } else {
-    $x_agent  = $agent_hash
-    $x_main   = $main_hash
+    $x_agent  = $agent
     if $::instance_role == 'puppet' {
-      $x_master = $master_hash
+      $x_master = $master
     }
   }
-  
+
   # [agent] section parameters
-  validate_bool 				  ( $x_agent["autoflush"]                  )
-  validate_string 				( $x_agent["certname"]                   )
-  validate_integer 		    ( $x_agent["configtimeout"]              )
-  validate_string         ( $x_agent["disable_warnings"]           )
-  validate_string 			  ( $x_agent["environment"]                )
-  validate_bool 					( $x_agent["listen"]                     )
-  validate_bool 			    ( $x_agent["pluginsync"]                 )
-  validate_string 				( $x_agent["server"]                     )
-  validate_bool 					( $x_agent["splay"]                      )
+  validate_bool 				  ( $x_agent["autoflush"]        )
+  validate_string 				( $x_agent["certname"]         )
+  validate_integer 		    ( $x_agent["configtimeout"]    )
+  validate_string         ( $x_agent["disable_warnings"] )
+  validate_string 			  ( $x_agent["environment"]      )
+  validate_bool 					( $x_agent["listen"]           )
+  validate_bool 			    ( $x_agent["pluginsync"]       )
+  validate_string 				( $x_agent["server"]           )
+  validate_bool 					( $x_agent["splay"]            )
 
   # [main] section parameters
-  validate_string         ( $x_main["disable_warnings"]            )
-  validate_absolute_path  ( $x_main["logdir"]                      )
-  validate_absolute_path  ( $x_main["rundir"]                      )
-  validate_string         ( $x_main["ssldir"]                      )
+  validate_string         ( $x_main["disable_warnings"]  )
+  validate_absolute_path  ( $x_main["logdir"]            )
+  validate_absolute_path  ( $x_main["rundir"]            )
+  validate_string         ( $x_main["ssldir"]            )
 
+  if $::instance_role != 'puppet' {
+    class { '::puppet::agent::install': } ->
+    class { '::puppet::agent::config':  } ~>
+    class { '::puppet::agent::service': }
 
-  class { '::puppet::agent::install': } ->
-  class { '::puppet::agent::config':  } ~>
-  class { '::puppet::agent::service': }
-
-  contain 'puppet::agent::install'
-  contain 'puppet::agent::config'
-  contain 'puppet::agent::service'
+    contain 'puppet::agent::install'
+    contain 'puppet::agent::config'
+    contain 'puppet::agent::service'
+  }
 
   if $::instance_role == 'puppet' {
     validate_bool           ( $x_master["autosign"]                  )

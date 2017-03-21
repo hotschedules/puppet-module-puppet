@@ -1,0 +1,20 @@
+[main]
+
+<%= @main.inspect -%>
+<%= @agent.inspect -%>
+
+<%  @main.keys.sort.each do |k,v| -%>
+<%= "#{k} = #{@main[k]}" %>
+<%  end -%>
+
+[agent]
+<%  @agent.keys.sort.each do |k,v| -%>
+<%= "#{k} = #{@agent[k]}" %>
+<%  end -%>
+
+<%  if @instance_role == "puppet" -%>
+[master]
+<%   @master.keys.sort.each do |k,v| -%>
+<%=   "#{k} = #{@master[k]}" %>
+<%   end -%>
+<%  end -%>
