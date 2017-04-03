@@ -7,11 +7,11 @@
 # PRIVATE CLASS: do not call directly
 class puppet::params {
   if $::instance_role != 'puppet' {
-    contain "puppet::params::agent::default"
+    contain 'puppet::params::agent::default'
   }
 
   if $::instance_role == 'puppet' {
-    contain "puppet::params::master::default"
+    contain 'puppet::params::master::default'
   }
 }
 

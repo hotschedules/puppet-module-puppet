@@ -7,10 +7,9 @@
 # PRIVATE CLASS: do not call directly
 #
 class puppet::master::service inherits puppet {
-
-service { 'puppetmaster':
-    ensure      => $mastersvcensure,
-    enable      => $mastersvcenable,
-    hasrestart  => true,
+  service { 'puppetmaster':
+    ensure     => $mastersvcensure,
+    enable     => $mastersvcenable,
+    hasrestart => true,
   }
 }

@@ -70,26 +70,26 @@ class puppet::master::passenger(
   }
 
   apache::vhost { "puppet-${certname}":
-    port               => $port,
-    priority           => '40',
-    docroot            => "${rackroot}/public",
-    serveradmin        => $serveradmin,
-    servername         => $certname,
-    ssl                => true,
-    ssl_cert           => "${ssldir}/certs/${certname}.pem",
-    ssl_key            => "${ssldir}/private_keys/${certname}.pem",
-    ssl_chain          => "${ssldir}/ca/ca_crt.pem",
-    ssl_ca             => "${ssldir}/ca/ca_crt.pem",
-    ssl_crl            => "${ssldir}/ca/ca_crl.pem",
-    rack_base_uris     => '/',
-    custom_fragment    => template('puppetmaster/apache_passenger_fragment.erb'),
-    require            => [
+    port            => $port,
+    priority        => '40',
+    docroot         => "${rackroot}/public",
+    serveradmin     => $serveradmin,
+    servername      => $certname,
+    ssl             => true,
+    ssl_cert        => "${ssldir}/certs/${certname}.pem",
+    ssl_key         => "${ssldir}/private_keys/${certname}.pem",
+    ssl_chain       => "${ssldir}/ca/ca_crt.pem",
+    ssl_ca          => "${ssldir}/ca/ca_crt.pem",
+    ssl_crl         => "${ssldir}/ca/ca_crl.pem",
+    rack_base_uris  => '/',
+    custom_fragment => template('puppetmaster/apache_passenger_fragment.erb'),
+    require         => [
       File["${rackroot}/config.ru"],
       File["${rackroot}/public"],
     ],
   }
 
-  ensure_resource('ini_setting', "puppet-master-sslclient",
+  ensure_resource('ini_setting', 'puppet-master-sslclient',
     {
       'ensure'  => 'present',
       'setting' => 'ssl_client_header',
@@ -100,7 +100,7 @@ class puppet::master::passenger(
     }
   )
 
-  ensure_resource('ini_setting', "puppet-master-sslclientverify",
+  ensure_resource('ini_setting', 'puppet-master-sslclientverify',
     {
       'ensure'  => 'present',
       'setting' => 'ssl_client_verify_header',
@@ -112,4 +112,3 @@ class puppet::master::passenger(
   )
 
 }
-

@@ -87,10 +87,10 @@ class puppet::master::r10k(
       $cachedir,
       $basedir,
     ]:
-      owner     => $user,
-      group     => $group,
-      mode      => '0750',
-      require   => Clabs::Install['r10k'];
+      owner   => $user,
+      group   => $group,
+      mode    => '0750',
+      require => Clabs::Install['r10k'];
     }
 
     clabs::template {
@@ -103,8 +103,8 @@ class puppet::master::r10k(
 
     # puppetmaster user
     user { $user:
-      password  => '*', # Disable password based login
-      shell     => '/bin/bash',
+      password => '*', # Disable password based login
+      shell    => '/bin/bash',
     }
 
     # SSH keys
@@ -141,12 +141,13 @@ class puppet::master::r10k(
     }
 
     # r10k time stamping
+    $ensure_mode = $autoupdate ? {
+      true    => 'present',
+      default => 'absent'
+    }
     if $timestamp {
       cron { 'r10k-timestamp':
-        ensure  => $autoupdate ? {
-          true    => 'present',
-          default => 'absent',
-        },
+        ensure  => $ensure_mode,
         command => $timestampcmd,
         user    => $user,
         minute  => $interval,
@@ -154,18 +155,17 @@ class puppet::master::r10k(
     }
 
     # r10k Automatic code updates
+    $require_mode = $timestamp ? {
+      true    => [ Cron['r10k-timestamp'], File['/usr/local/bin/run-r10k'], ],
+      default => undef,
+    }
+
     cron { 'r10k':
-      ensure  => $autoupdate ? {
-        true    => 'present',
-        default => 'absent',
-      },
+      ensure  => $ensure_mode,
       command => $updatecmd,
       user    => $cronuser,
       minute  => $interval,
-      require => $timestamp ? {
-        true    => [ Cron['r10k-timestamp'], File['/usr/local/bin/run-r10k'], ],
-        default => undef,
-      },
+      require => $requuire_mode,
     }
   }
 
@@ -178,27 +178,29 @@ class puppet::master::r10k(
   }
 
   file { '/var/log/r10k.log':
-    ensure  => 'present',
-    owner   => $user,
-    group   => $group,
-    mode    => '0664',
+    ensure => 'present',
+    owner  => $user,
+    group  => $group,
+    mode   => '0664',
+  }
+
+  $enabled_mode = $enabled ? {
+    true    => 'present',
+    default => 'absent'
   }
 
   logrotate::rule { 'r10k':
-    ensure        => $enabled ? {
-      true    => 'present',
-      default => 'absent',
-    },
-    path          => '/var/log/r10k.log',
-    missingok     => true,
-    ifempty       => false,
-    rotate        => 4,
-    rotate_every  => 'week',
-    compress      => true,
-    create        => true,
-    create_mode   => '0664',
-    create_owner  => $user,
-    create_group  => $group,
+    ensure       => $ensure_mode,
+    path         => '/var/log/r10k.log',
+    missingok    => true,
+    ifempty      => false,
+    rotate       => 4,
+    rotate_every => 'week',
+    compress     => true,
+    create       => true,
+    create_mode  => '0664',
+    create_owner => $user,
+    create_group => $group,
   }
 }
 

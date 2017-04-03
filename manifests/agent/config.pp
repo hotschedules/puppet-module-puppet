@@ -8,27 +8,7 @@
 #
 class puppet::agent::config inherits puppet {
 
-  define puppetagentconf(
-    $agent          = undef,
-    $content        = $content,
-    $ensure         = "file",
-    $group          = $group,
-    $main           = undef,
-    $mode           = '0660',
-    $owner          = $user,
-    $confighash     = {}
-  ) {
-    file { "/etc/puppet/puppet.conf":
-      content       => $content,
-      ensure        => $ensure,
-      group         => $group,
-      mode          => $mode,
-      owner         => $owner,
-      notify        => Service['puppet']
-    }
-  }
-
-  create_resources(puppetagentconf, { 'confighash' = {'main' => $x_main, 'agent' => $x_agent }} )
+  create_resources(puppetagentconf, { 'confighash' => {'main' => $x_main, 'agent' => $x_agent }} )
 
 }
 

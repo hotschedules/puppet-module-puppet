@@ -8,8 +8,8 @@
 #
 class puppet::agent::service inherits puppet {
   service { 'puppet':
-    ensure     =>  $agentsvcensure,
-    enable     =>  $agentsvcenable,
-    hasrestart =>  true,
+    ensure     => $agentsvcensure,
+    enable     => $agentsvcenable,
+    hasrestart => true,
   }
 }

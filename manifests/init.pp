@@ -6,22 +6,22 @@
 #
 class puppet (
 
-  $agent           = getvar("::puppet::params::agent::default::agent"),
-  $agentpkg        = getvar("::puppet::params::agent::default::pkg"),
-  $agentsvcenable  = getvar("::puppet::params::agent::default::svcenable"),
-  $agentsvcensure  = getvar("::puppet::params::agent::default::svcensure"),
-  $agentsvcname    = getvar("::puppet::params::agent::default::svcname"),
-  $hieramerge      = getvar("::puppet::params::agent::default::hieramerge"),
-  $main            = getvar("::puppet::params::agent::default::main"),
-  $master          = getvar("::puppet::params::master::default::master"),
-  $mastersvcenable = getvar("::puppet::params::master::default::svcenable"),
-  $mastersvcensure = getvar("::puppet::params::master::default::svcensure"),
-  $mastersvcname   = getvar("::puppet::params::master::default::svcname"),
-  $masterpkg       = getvar("::puppet::params::master::default::pkg"),
-  $version         = getvar("::puppet::params::master::default::version")
+  $agent           = getvar('::puppet::params::agent::default::agent'),
+  $agentpkg        = getvar('::puppet::params::agent::default::pkg'),
+  $agentsvcenable  = getvar('::puppet::params::agent::default::svcenable'),
+  $agentsvcensure  = getvar('::puppet::params::agent::default::svcensure'),
+  $agentsvcname    = getvar('::puppet::params::agent::default::svcname'),
+  $hieramerge      = getvar('::puppet::params::agent::default::hieramerge'),
+  $main            = getvar('::puppet::params::agent::default::main'),
+  $master          = getvar('::puppet::params::master::default::master'),
+  $mastersvcenable = getvar('::puppet::params::master::default::svcenable'),
+  $mastersvcensure = getvar('::puppet::params::master::default::svcensure'),
+  $mastersvcname   = getvar('::puppet::params::master::default::svcname'),
+  $masterpkg       = getvar('::puppet::params::master::default::pkg'),
+  $version         = getvar('::puppet::params::master::default::version'),
+  $passenger       = getvar('::puppet::params::master::default::passenger')
 
 ) inherits puppet::params {
-  
   validate_hash             ( $agent            )
   validate_string           ( $agentpkg         )
   validate_bool             ( $agentsvcenable   )
@@ -36,7 +36,7 @@ class puppet (
     validate_string         ( $mastersvcname    )
     validate_bool           ( $mastersvcensure  )
   }
-  
+
   $x_main = $main
   # Merge config hashes
   if $hieramerge {
@@ -52,15 +52,15 @@ class puppet (
   }
 
   # [agent] section parameters
-  validate_bool 				  ( $x_agent["autoflush"]        )
-  validate_string 				( $x_agent["certname"]         )
-  validate_integer 		    ( $x_agent["configtimeout"]    )
+  validate_bool           ( $x_agent["autoflush"]        )
+  validate_string         ( $x_agent["certname"]         )
+  validate_integer        ( $x_agent["configtimeout"]    )
   validate_string         ( $x_agent["disable_warnings"] )
-  validate_string 			  ( $x_agent["environment"]      )
-  validate_bool 					( $x_agent["listen"]           )
-  validate_bool 			    ( $x_agent["pluginsync"]       )
-  validate_string 				( $x_agent["server"]           )
-  validate_bool 					( $x_agent["splay"]            )
+  validate_string         ( $x_agent["environment"]      )
+  validate_bool           ( $x_agent["listen"]           )
+  validate_bool           ( $x_agent["pluginsync"]       )
+  validate_string         ( $x_agent["server"]           )
+  validate_bool           ( $x_agent["splay"]            )
 
   # [main] section parameters
   validate_string         ( $x_main["disable_warnings"]  )
@@ -69,9 +69,9 @@ class puppet (
   validate_string         ( $x_main["ssldir"]            )
 
   if $::instance_role != 'puppet' {
-    class { '::puppet::agent::install': } ->
-    class { '::puppet::agent::config':  } ~>
-    class { '::puppet::agent::service': }
+    class { '::puppet::agent::install': }
+    -> class { '::puppet::agent::config':  }
+    ~> class { '::puppet::agent::service': }
 
     contain 'puppet::agent::install'
     contain 'puppet::agent::config'
@@ -90,19 +90,19 @@ class puppet (
     validate_string         ( $x_master["ssl_client_header"]         )
     validate_string         ( $x_master["ssl_client_verify_header"]  )
 
-    class { '::puppet::master::install': } ->
-    class { '::puppet::master::config':  } ~>
-    class { '::puppet::master::service': }
+    class { '::puppet::master::install': }
+    -> class { '::puppet::master::config':  }
+    ~> class { '::puppet::master::service': }
 
     contain 'puppet::master::install'
     contain 'puppet::master::config'
     contain 'puppet::master::service'
 
-    contain "puppet::master::r10k"
-    contain "puppet::master::hiera"
+    contain 'puppet::master::r10k'
+    contain 'puppet::master::hiera'
 
     if $passenger {
-      contain "puppet::master::passenger"
+      contain 'puppet::master::passenger'
     }
   }
 }
