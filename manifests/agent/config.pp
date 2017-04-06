@@ -1,6 +1,6 @@
 # vim: tabstop=2 expandtab shiftwidth=2 softtabstop=2 foldmethod=marker smartindent
 #
-# == Class: puppet::params::agent::default {
+# == Class: puppet::agent::config {
 #
 # Sets default puppet parameters
 #
@@ -8,7 +8,7 @@
 #
 class puppet::agent::config inherits puppet {
 
-  create_resources(puppetagentconf, { 'confighash' => {'main' => $x_main, 'agent' => $x_agent }} )
+  create_resources(puppetagentconf, { 'params' => {'main' => $x_main, 'agent' => $x_agent }} )
 
 }
 

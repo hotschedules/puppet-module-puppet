@@ -1,20 +1,23 @@
 [main]
 
+<%= @params.inspect -%>
 <%= @main.inspect -%>
 <%= @agent.inspect -%>
+<%# @main.inspect -%>
+<%# @agent.inspect -%>
 
-<%  @main.each do |k,v| -%>
-<%= "#{k} = #{v}" %>
-<%  end -%>
+<%# @main.each do |k,v| -%>
+<%# "#{k} = #{v}" %>
+<%# end -%>
 
 [agent]
-<%  @agent.each do |k,v| -%>
-<%= "#{k} = #{v}" %>
-<%  end -%>
+<%# @agent.each do |k,v| -%>
+<%# "#{k} = #{v}" %>
+<%# end -%>
 
-<% if @instance_role == "puppet" -%>
+<%#if @instance_role == "puppet" -%>
 [master]
-<%  @master.each do |k,v| -%>
-<%=   "#{k} = #{v}" %>
-<%   end -%>
-<%  end -%>
+<%# @master.each do |k,v| -%>
+<%#   "#{k} = #{v}" %>
+<%#  end -%>
+<%# end -%>

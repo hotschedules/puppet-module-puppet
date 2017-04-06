@@ -1,12 +1,12 @@
 # vim: tabstop=2 expandtab shiftwidth=2 softtabstop=2 foldmethod=marker smartindent
 #
-# == Class: puppet::params::agent::default {
+# == Class: puppet::params::agent {
 #
 # Sets default puppet parameters for agent
 #
 # PRIVATE CLASS: do not call directly
 #
-class puppet::params::agent::default {
+class puppet::params::agent {
 
   $content    = template('puppet/etc/puppet/puppet.conf.erb')
   $group      = 'puppet'

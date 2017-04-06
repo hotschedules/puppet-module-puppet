@@ -6,20 +6,20 @@
 #
 class puppet (
 
-  $agent           = getvar('::puppet::params::agent::default::agent'),
-  $agentpkg        = getvar('::puppet::params::agent::default::pkg'),
-  $agentsvcenable  = getvar('::puppet::params::agent::default::svcenable'),
-  $agentsvcensure  = getvar('::puppet::params::agent::default::svcensure'),
-  $agentsvcname    = getvar('::puppet::params::agent::default::svcname'),
-  $hieramerge      = getvar('::puppet::params::agent::default::hieramerge'),
-  $main            = getvar('::puppet::params::agent::default::main'),
-  $master          = getvar('::puppet::params::master::default::master'),
-  $mastersvcenable = getvar('::puppet::params::master::default::svcenable'),
-  $mastersvcensure = getvar('::puppet::params::master::default::svcensure'),
-  $mastersvcname   = getvar('::puppet::params::master::default::svcname'),
-  $masterpkg       = getvar('::puppet::params::master::default::pkg'),
-  $version         = getvar('::puppet::params::master::default::version'),
-  $passenger       = getvar('::puppet::params::master::default::passenger')
+  $agent           = getvar('::puppet::params::agent::agent'),
+  $agentpkg        = getvar('::puppet::params::agent::pkg'),
+  $agentsvcenable  = getvar('::puppet::params::agent::svcenable'),
+  $agentsvcensure  = getvar('::puppet::params::agent::svcensure'),
+  $agentsvcname    = getvar('::puppet::params::agent::svcname'),
+  $hieramerge      = getvar('::puppet::params::agent::hieramerge'),
+  $main            = getvar('::puppet::params::agent::main'),
+  $master          = getvar('::puppet::params::master::master'),
+  $mastersvcenable = getvar('::puppet::params::master::svcenable'),
+  $mastersvcensure = getvar('::puppet::params::master::svcensure'),
+  $mastersvcname   = getvar('::puppet::params::master::svcname'),
+  $masterpkg       = getvar('::puppet::params::master::pkg'),
+  $version         = getvar('::puppet::params::master::version'),
+  $passenger       = getvar('::puppet::params::master::passenger')
 
 ) inherits puppet::params {
   validate_hash             ( $agent            )
@@ -37,36 +37,37 @@ class puppet (
     validate_bool           ( $mastersvcensure  )
   }
 
-  $x_main = $main
   # Merge config hashes
   if $hieramerge {
-    $x_agent  = hiera_hash('puppet::agent',  $agent)
+    $x_agent  = hiera_hash('puppet::agent::params',  $agent)
+    $x_main   = hiera_hash('puppet::main::params', $main)
     if $::instance_role == 'puppet' {
-      $x_master = hiera_hash('puppet::master', $master)
+      $x_master = hiera_hash('puppet::master::params', $master)
     }
   } else {
-    $x_agent  = $agent
+    $x_agent = $agent
+    $x_main  = $main
     if $::instance_role == 'puppet' {
       $x_master = $master
     }
   }
 
-  # [agent] section parameters
-  validate_bool           ( $x_agent["autoflush"]        )
-  validate_string         ( $x_agent["certname"]         )
-  validate_integer        ( $x_agent["configtimeout"]    )
-  validate_string         ( $x_agent["disable_warnings"] )
-  validate_string         ( $x_agent["environment"]      )
-  validate_bool           ( $x_agent["listen"]           )
-  validate_bool           ( $x_agent["pluginsync"]       )
-  validate_string         ( $x_agent["server"]           )
-  validate_bool           ( $x_agent["splay"]            )
+  # # [agent] section parameters
+  # validate_bool           ( $x_agent["autoflush"]        )
+  # validate_string         ( $x_agent["certname"]         )
+  # validate_integer        ( $x_agent["configtimeout"]    )
+  # validate_string         ( $x_agent["disable_warnings"] )
+  # validate_string         ( $x_agent["environment"]      )
+  # validate_bool           ( $x_agent["listen"]           )
+  # validate_bool           ( $x_agent["pluginsync"]       )
+  # validate_string         ( $x_agent["server"]           )
+  # validate_bool           ( $x_agent["splay"]            )
 
-  # [main] section parameters
-  validate_string         ( $x_main["disable_warnings"]  )
-  validate_absolute_path  ( $x_main["logdir"]            )
-  validate_absolute_path  ( $x_main["rundir"]            )
-  validate_string         ( $x_main["ssldir"]            )
+  # # [main] section parameters
+  # validate_string         ( $x_main["disable_warnings"]  )
+  # validate_absolute_path  ( $x_main["logdir"]            )
+  # validate_absolute_path  ( $x_main["rundir"]            )
+  # validate_string         ( $x_main["ssldir"]            )
 
   if $::instance_role != 'puppet' {
     class { '::puppet::agent::install': }
@@ -97,7 +98,6 @@ class puppet (
     contain 'puppet::master::install'
     contain 'puppet::master::config'
     contain 'puppet::master::service'
-
     contain 'puppet::master::r10k'
     contain 'puppet::master::hiera'
 

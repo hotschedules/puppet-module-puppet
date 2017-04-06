@@ -1,12 +1,12 @@
 # vim: tabstop=2 expandtab shiftwidth=2 softtabstop=2 foldmethod=marker smartindent
 #
-# == Class: puppet::params::agent::default {
+# == Class: puppet::params::master {
 #
 # Sets default puppet master parameters
 #
 # PRIVATE CLASS: do not call directly
 #
-class puppet::params::master::default {
+class puppet::params::master {
   $hiera      = hiera_hash('puppet::master::hiera',         {})
   $passenger  = false
   $r10k       = hiera_hash('puppet::master::r10k',          {})

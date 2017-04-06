@@ -8,14 +8,13 @@
 #
 # puppet::agent::puppetagentconf generates /etc/puppet/puppet.conf
 define puppet::agent::puppetagentconf(
-  $agent          = undef,
   $content        = $content,
   $ensure         = 'file',
   $group          = $group,
-  $main           = undef,
   $mode           = '0660',
-  $owner          = $user,
-  $confighash     = {}
+  $owner          = $owner,
+  $main         = undef,
+  $agent         = undef,
 ) {
   file { '/etc/puppet/puppet.conf':
     ensure  => $ensure,
