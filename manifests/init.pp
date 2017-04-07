@@ -38,18 +38,10 @@ class puppet (
   }
 
   # Merge config hashes
-  if $hieramerge {
-    $x_agent  = hiera_hash('puppet::agent::params',  $agent)
-    $x_main   = hiera_hash('puppet::main::params', $main)
-    if $::instance_role == 'puppet' {
-      $x_master = hiera_hash('puppet::master::params', $master)
-    }
-  } else {
-    $x_agent = $agent
-    $x_main  = $main
-    if $::instance_role == 'puppet' {
-      $x_master = $master
-    }
+  $x_agent  = merge($agent, hiera_hash('puppet::agent::params', {}))
+  $x_main   = merge($main, hiera_hash('puppet::main::params', {}))
+  if $::instance_role == 'puppet' {
+    $x_master = merge($master, hiera_hash('puppet::master::params', {}))
   }
 
   # # [agent] section parameters
