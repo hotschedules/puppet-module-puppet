@@ -69,7 +69,7 @@ class puppet (
   contain 'puppet::agent::config'
   contain 'puppet::agent::service'
 
-  if $::instance_role == 'puppet' {
+  unless $x_master == undef {
     validate_bool           ( $x_master["autosign"]                  )
     validate_string         ( $x_master["certname"]                  )
     validate_string         ( $x_master["dns_alt_names"]             )
