@@ -61,15 +61,13 @@ class puppet (
   # validate_absolute_path  ( $x_main["rundir"]            )
   # validate_string         ( $x_main["ssldir"]            )
 
-  if $::instance_role != 'puppet' {
-    class { '::puppet::agent::install': }
-    -> class { '::puppet::agent::config':  }
-    ~> class { '::puppet::agent::service': }
+  class { '::puppet::agent::install': }
+  -> class { '::puppet::agent::config':  }
+  ~> class { '::puppet::agent::service': }
 
-    contain 'puppet::agent::install'
-    contain 'puppet::agent::config'
-    contain 'puppet::agent::service'
-  }
+  contain 'puppet::agent::install'
+  contain 'puppet::agent::config'
+  contain 'puppet::agent::service'
 
   if $::instance_role == 'puppet' {
     validate_bool           ( $x_master["autosign"]                  )
