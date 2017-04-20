@@ -9,5 +9,7 @@ version     '0.0.1'
 
 dependency  'clabs/core',           '>= 0.0.1'
 dependency  'puppetlabs/stdlib',    '>= 4.1.0'
-dependency  'puppetlabs/inifile',   '>= 1.0.3'
+dependency  'puppetlabs/apache',    '>= 1.1.1'
+dependency  'puppetlabs/passenger', '>= 0.3.0'
+dependency  'rodjek/logrotate',     '>= 1.1.1'
 

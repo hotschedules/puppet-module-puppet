@@ -1,0 +1,16 @@
+[main]
+<% @x_main.sort.each do |k,v| -%>
+<%= "#{k} = #{v}" %>
+<% end -%>
+
+[agent]
+<% @x_agent.sort.each do |k,v| -%>
+<%= "#{k} = #{v}" %>
+<% end -%>
+
+<% if @instance_role == "puppet" -%>
+[master]
+<% @x_master.sort.each do |k,v| -%>
+<%= "#{k} = #{v}" %>
+<% end -%>
+<% end -%>

@@ -6,12 +6,14 @@
 
 # A list of git repositories to create
 :sources:
-  # This will clone the git repository and instantiate an environment per
-  # branch in <%= @r10kbasedir %>
-  :main:
-    remote:   '<%= @mergedsettings['remote'] %>'
-    basedir:  '<%= @mergedsettings['basedir'] %>'
+<% @remotes.each_pair do |key, hash| -%>
+  :<%= key %>:
+    remote: '<%= hash['url'] %>'
+    basedir: '<%= hash['basedir'] %>'
+<% end -%>
 
 :purgedirs:
-  - '<%= @mergedsettings['basedir'] %>'
+<% @remotes.each_pair do |key, hash| -%>
+  - '<%= hash['basedir'] %>'
+<% end -%>
 
