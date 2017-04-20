@@ -34,7 +34,7 @@ Configuration settings should be set via Hiera
 puppet::enabled     : true
 puppet::svc         : 'puppet'
 puppet::pkg         : 'puppet'
-puppet::version     : '3.4.3-1.el6'
+puppet::version     : '3.8.7-1.el6'
 puppet::user        : 'puppet'
 puppet::group       : 'puppet'
 puppet::configfile  : '/etc/puppet/puppet.conf'
@@ -47,21 +47,6 @@ puppet::settings:
     server          : %{::servername}
     configtimeout   : 300
     modulepath      : '/etc/puppet/modules:/usr/share/puppet/modules'
-```
-
-### Default settings (Windows)
-
-Same as Linux except for:
-    - service run-as user & group
-    - configuration file location
-    - local module directory locations
-
-```yaml
-puppet::user        : 'SYSTEM'
-puppet::group       : 'Administrators'
-puppet::configfile  : '/ProgramData/PuppetLabs/puppet/etc/puppet.conf'
-puppet::settings:
-    modulepath      : 'C:/ProgramData/PuppetLabs/puppet/etc/modules;C:/usr/share/puppet/modules'
 ```
 
 ## See Also

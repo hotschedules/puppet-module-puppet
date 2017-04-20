@@ -4,36 +4,59 @@
   - yaml
 
 :hierarchy:
-  - "certs/%{clientcert}"
-  - "hosts/%{hostname}"
-  - "environment/%{environment}/%{operatingsystem}-%{lsbdistrelease}"     # Linux only
-  - "environment/%{environment}/%{operatingsystem}-%{lsbmajdistrelease}"  # Linux only
-  - "environment/%{environment}/%{operatingsystemversion}" # NOTE: Windows only (win_facts module)
-  - "environment/%{environment}/%{operatingsystem}"
-  - "environment/%{environment}/%{osfamily}"
-  - "environment/%{environment}/%{kernel}"
-  - "environment/%{environment}/defaults"
-  - "network/%{subnetwork}/%{operatingsystem}-%{lsbdistrelease}"     # Linux only
-  - "network/%{subnetwork}/%{operatingsystem}-%{lsbmajdistrelease}"  # Linux only
-  - "network/%{subnetwork}/%{operatingsystemversion}" # NOTE: Windows only (win_facts module)
-  - "network/%{subnetwork}/%{operatingsystem}"
-  - "network/%{subnetwork}/%{osfamily}"
-  - "network/%{subnetwork}/%{kernel}"
-  - "network/%{subnetwork}/defaults"
-  - "network/%{network}/%{operatingsystem}-%{lsbdistrelease}"     # Linux only
-  - "network/%{network}/%{operatingsystem}-%{lsbmajdistrelease}"  # Linux only
-  - "network/%{network}/%{operatingsystemversion}" # NOTE: Windows only (win_facts module)
-  - "network/%{network}/%{operatingsystem}"
-  - "network/%{network}/%{osfamily}"
-  - "network/%{network}/%{kernel}"
-  - "network/%{network}/defaults"
-  - "os/%{operatingsystem}-%{lsbdistrelease}"     # Linux only
-  - "os/%{operatingsystem}-%{lsbmajdistrelease}"  # Linux only
-  - "os/%{operatingsystemversion}" # NOTE: Windows only (win_facts module)
-  - "os/%{operatingsystem}"
-  - "os/%{osfamily}"
-  - "os/%{kernel}"
-  - "defaults"
+  - certs/%{clientcert}
+  - hosts/%{hostname}
+  # Next two are Linux only
+  - role/%{instance_role}/%{environment}/%{operatingsystem}-%{lsbdistrelease}
+  - role/%{instance_role}/%{environment}/%{operatingsystem}-%{lsbmajdistrelease}
+  # Next one is Windows only (win_facts module)
+  - role/%{instance_role}/%{environment}/%{operatingsystemversion}
+  - role/%{instance_role}/%{environment}/%{operatingsystem}
+  - role/%{instance_role}/%{environment}/%{osfamily}
+  - role/%{instance_role}/%{environment}/%{kernel}
+  - role/%{instance_role}/%{environment}/defaults
+  - role/%{instance_role}/%{operatingsystem}-%{lsbdistrelease}
+  - role/%{instance_role}/%{operatingsystem}-%{lsbmajdistrelease}
+  - role/%{instance_role}/%{operatingsystemversion}
+  - role/%{instance_role}/%{operatingsystem}
+  - role/%{instance_role}/%{osfamily}
+  - role/%{instance_role}/%{kernel}
+  - role/%{instance_role}/defaults
+  - environment/%{environment}/%{operatingsystem}-%{lsbdistrelease}
+  - environment/%{environment}/%{operatingsystem}-%{lsbmajdistrelease}
+  - environment/%{environment}/%{operatingsystemversion}
+  - environment/%{environment}/%{operatingsystem}
+  - environment/%{environment}/%{osfamily}
+  - environment/%{environment}/%{kernel}
+  - environment/%{environment}/defaults
+  - environment/%{operatingsystem}-%{lsbdistrelease}
+  - environment/%{operatingsystem}-%{lsbmajdistrelease}
+  - environment/%{operatingsystemversion}
+  - environment/%{operatingsystem}
+  - environment/%{osfamily}
+  - environment/%{kernel}
+  - environment/defaults
+  - network/%{subnetwork}/%{operatingsystem}-%{lsbdistrelease}
+  - network/%{subnetwork}/%{operatingsystem}-%{lsbmajdistrelease}
+  - network/%{subnetwork}/%{operatingsystemversion}
+  - network/%{subnetwork}/%{operatingsystem}
+  - network/%{subnetwork}/%{osfamily}
+  - network/%{subnetwork}/%{kernel}
+  - network/%{subnetwork}/defaults
+  - network/%{network}/%{operatingsystem}-%{lsbdistrelease}
+  - network/%{network}/%{operatingsystem}-%{lsbmajdistrelease}
+  - network/%{network}/%{operatingsystemversion}
+  - network/%{network}/%{operatingsystem}
+  - network/%{network}/%{osfamily}
+  - network/%{network}/%{kernel}
+  - network/%{network}/defaults
+  - os/%{operatingsystem}-%{lsbdistrelease}
+  - os/%{operatingsystem}-%{lsbmajdistrelease}
+  - os/%{operatingsystemversion}
+  - os/%{operatingsystem}
+  - os/%{osfamily}
+  - os/%{kernel}
+  - defaults
 
 :yaml:
 
