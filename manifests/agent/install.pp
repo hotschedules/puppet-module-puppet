@@ -8,8 +8,8 @@
 
 class puppet::agent::install(
 
-  $pkg      = $::puppet::agent::pkg,
-  $version  = $::puppet::agent::version,
+  $pkg      = $::puppet::params::agent::pkg,
+  $version  = $::puppet::params::agent::version,
 
 ) {
 
