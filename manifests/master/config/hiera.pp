@@ -38,7 +38,7 @@ class puppet::master::config::hiera(
       owner   => $user,
       group   => 'adm',
       mode    => '0440',  # secure (may contain passwords)
-      notify  => Class['::puppet::master::service'],
+      notify  => Service[$mastersvcname]
   }
 
   clabs::link {

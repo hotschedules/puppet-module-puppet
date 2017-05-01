@@ -13,7 +13,7 @@ class puppet::master::service inherits puppet {
     enable => false,
   }
 
-  service { 'puppet':
+  service { $agentsvcname:
     ensure     => $agentsvcensure,
     enable     => $agentsvcenable,
     hasrestart => true,

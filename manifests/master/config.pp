@@ -15,7 +15,7 @@ class puppet::master::config inherits puppet {
     group   => $group,
     mode    => $mode,
     owner   => $owner,
-    notify  => Service['puppet']
+    notify  => [Service[$agentsvcname],Service[$mastersvcname]]
   }
 
   contain 'puppet::master::config::hiera'
