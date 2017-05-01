@@ -15,7 +15,6 @@ class puppet (
   $configfile      = getvar('::puppet::params::configfile'),
   $main            = getvar('::puppet::params::agent::main'),
   $master          = getvar('::puppet::params::master::master'),
-  $mastersvc       = getvar('::puppet::params::master::svc'),
   $mastersvcenable = getvar('::puppet::params::master::svcenable'),
   $mastersvcensure = getvar('::puppet::params::master::svcensure'),
   $mastersvcname   = getvar('::puppet::params::master::svcname'),
