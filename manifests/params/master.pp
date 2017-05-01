@@ -36,10 +36,9 @@ class puppet::params::master {
     'basedir'                 => "/etc/puppet/environments"
   }
   $ssldir     = '/var/lib/puppet/ssl'
-  $svc        = 'httpd'
   $svcenable  = true
   $svcensure  = true
-  $svcname    = 'puppet'
+  $svcname    = 'httpd'
   $user       = 'puppet'
   $version    = '3.8.7-1.el6' 
 
