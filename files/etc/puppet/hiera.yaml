@@ -6,63 +6,15 @@
 :hierarchy:
   - certs/%{clientcert}
   - hosts/%{hostname}
-  # Next two are Linux only
-  - role/%{instance_role}/%{environment}/%{operatingsystem}-%{lsbdistrelease}
-  - role/%{instance_role}/%{environment}/%{operatingsystem}-%{lsbmajdistrelease}
-  # Next one is Windows only (win_facts module)
-  - role/%{instance_role}/%{environment}/%{operatingsystemversion}
-  - role/%{instance_role}/%{environment}/%{operatingsystem}
-  - role/%{instance_role}/%{environment}/%{osfamily}
-  - role/%{instance_role}/%{environment}/%{kernel}
   - role/%{instance_role}/%{environment}/defaults
-  - role/%{instance_role}/%{operatingsystem}-%{lsbdistrelease}
-  - role/%{instance_role}/%{operatingsystem}-%{lsbmajdistrelease}
-  - role/%{instance_role}/%{operatingsystemversion}
-  - role/%{instance_role}/%{operatingsystem}
-  - role/%{instance_role}/%{osfamily}
-  - role/%{instance_role}/%{kernel}
   - role/%{instance_role}/defaults
-  - environment/%{environment}/%{operatingsystem}-%{lsbdistrelease}
-  - environment/%{environment}/%{operatingsystem}-%{lsbmajdistrelease}
-  - environment/%{environment}/%{operatingsystemversion}
-  - environment/%{environment}/%{operatingsystem}
-  - environment/%{environment}/%{osfamily}
-  - environment/%{environment}/%{kernel}
   - environment/%{environment}/defaults
-  - environment/%{operatingsystem}-%{lsbdistrelease}
-  - environment/%{operatingsystem}-%{lsbmajdistrelease}
-  - environment/%{operatingsystemversion}
-  - environment/%{operatingsystem}
-  - environment/%{osfamily}
-  - environment/%{kernel}
-  - environment/defaults
-  - network/%{subnetwork}/%{operatingsystem}-%{lsbdistrelease}
-  - network/%{subnetwork}/%{operatingsystem}-%{lsbmajdistrelease}
-  - network/%{subnetwork}/%{operatingsystemversion}
-  - network/%{subnetwork}/%{operatingsystem}
-  - network/%{subnetwork}/%{osfamily}
-  - network/%{subnetwork}/%{kernel}
-  - network/%{subnetwork}/defaults
-  - network/%{network}/%{operatingsystem}-%{lsbdistrelease}
-  - network/%{network}/%{operatingsystem}-%{lsbmajdistrelease}
-  - network/%{network}/%{operatingsystemversion}
-  - network/%{network}/%{operatingsystem}
-  - network/%{network}/%{osfamily}
-  - network/%{network}/%{kernel}
-  - network/%{network}/defaults
-  - os/%{operatingsystem}-%{lsbdistrelease}
-  - os/%{operatingsystem}-%{lsbmajdistrelease}
-  - os/%{operatingsystemversion}
-  - os/%{operatingsystem}
-  - os/%{osfamily}
-  - os/%{kernel}
   - defaults
 
 :yaml:
 
 # datadir is empty here, so hiera uses its defaults:
 # - /var/lib/hiera on *nix
-# - %CommonAppData%\PuppetLabs\hiera\var on Windows
 # When specifying a datadir, make sure the directory exists.
   :datadir: "/etc/puppet/environments/%{environment}/hiera/"
 
