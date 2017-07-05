@@ -8,16 +8,16 @@
 
 :multiyaml:
   :backends:
-<% @remotes.each_key do |key| -%>
+<% @remotes.sort.each_key do |key| -%>
   - <%= key %>
 <% end -%>
 
 :hierarchy:
-<% @datasources.each do |name| -%>
+<% @datasources.sort.each do |name| -%>
   - <%= name %>
 <% end -%>
 
-<% @remotes.each_pair do |key, hash| -%>
+<% @remotes.sort.each_pair do |key, hash| -%>
 :<%= key %>:
  :datadir: "<%= hash['dir'] %>"
 <% end -%>
