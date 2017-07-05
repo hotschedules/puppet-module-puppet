@@ -17,10 +17,10 @@
   - <%= name %>
 <% end -%>
 
-<% @remotes = Hash[ @remotes.sort{ |v0, v1| v0[0] <=> v1[0] } ] -%>
-<% @remotes.each_pair do |key, hash| -%>
-:<%= key %>:
- :datadir: "<%= hash['dir'] %>"
+<% @remotes = @remotes.sort_by { |key, hash| hash } -%>
+<% @remotes.each do |remote| -%>
+:<%= remote[0] %>:
+ :datadir: "<%= remote[1]['dir'] %>"
 <% end -%>
 
 :merge_behavior: deeper
