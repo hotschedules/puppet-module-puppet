@@ -6,14 +6,15 @@
 
 # A list of git repositories to create
 :sources:
-<% @remotes.each_pair do |key, hash| -%>
-  :<%= key %>:
-    remote: '<%= hash['url'] %>'
-    basedir: '<%= hash['basedir'] %>'
+<% @remotes = @remotes.to_a.sort -%>
+<% @remotes.each do |remote| -%>
+  :<%= remote[0] %>:
+    remote: '<%= remote[1]['url'] %>'
+    basedir: '<%= remote[1]['basedir'] %>'
 <% end -%>
 
 :purgedirs:
-<% @remotes.each_pair do |key, hash| -%>
-  - '<%= hash['basedir'] %>'
+<% @remotes.each do |remote| -%>
+  - '<%= remote[1]['basedir'] %>'
 <% end -%>
 
