@@ -8,7 +8,7 @@
 
 :multiyaml:
   :backends:
-<% @remotes.sort.each_key do |key| -%>
+<% @remotes.keys.sort.each do |key| -%>
   - <%= key %>
 <% end -%>
 
@@ -17,7 +17,8 @@
   - <%= name %>
 <% end -%>
 
-<% @remotes.sort.each_pair do |key, hash| -%>
+<% @remotes = @remotes.sort_by(&:first) -%>
+<% @remotes.each_pair do |key, hash| -%>
 :<%= key %>:
  :datadir: "<%= hash['dir'] %>"
 <% end -%>
