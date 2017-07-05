@@ -17,8 +17,8 @@
   - <%= name %>
 <% end -%>
 
-<% @remotes_array = @remotes.sort_by { |key, value| value } -%>
-<% @remotes_array.each do |remote| -%>
+<% @remotes = @remotes.to_a.sort -%>
+<% @remotes.each do |remote| -%>
 :<%= remote[0] %>:
  :datadir: "<%= remote[1]['dir'] %>"
 <% end -%>
