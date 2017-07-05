@@ -8,18 +8,19 @@
 
 :multiyaml:
   :backends:
-<% @remotes.sort.each_key do |key| -%>
+<% @remotes.keys.sort.each do |key| -%>
   - <%= key %>
 <% end -%>
 
 :hierarchy:
-<% @datasources.sort.each do |name| -%>
+<% @datasources.each do |name| -%>
   - <%= name %>
 <% end -%>
 
-<% @remotes.sort.each_pair do |key, hash| -%>
-:<%= key %>:
- :datadir: "<%= hash['dir'] %>"
+<% @remotes = @remotes.to_a.sort -%>
+<% @remotes.each do |remote| -%>
+:<%= remote[0] %>:
+ :datadir: "<%= remote[1]['dir'] %>"
 <% end -%>
 
 :merge_behavior: deeper
