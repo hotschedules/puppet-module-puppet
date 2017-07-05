@@ -1,0 +1,25 @@
+# vim: tabstop=2 expandtab shiftwidth=2 softtabstop=2 foldmethod=marker
+#
+---
+
+:backends:
+  - yaml
+  - multiyaml
+
+:multiyaml:
+  :backends:
+<% @remotes.each_key do |key| -%>
+  - <%= key %>
+<% end -%>
+
+:hierarchy:
+<% @datasources.each do |name| -%>
+  - <%= name %>
+<% end -%>
+
+<% @remotes.each_pair do |key, hash| -%>
+:<%= key %>:
+ :datadir: "<%= hash['dir'] %>"
+<% end -%>
+
+:merge_behavior: deeper
