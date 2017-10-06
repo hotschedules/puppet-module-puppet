@@ -106,7 +106,6 @@ class puppet::master::config::r10k(
       owner     => $user,
       group     => $group,
       mode      => '0750',
-      require   => Clabs::Install['r10k'];
     }
 
     clabs::template {
@@ -114,7 +113,6 @@ class puppet::master::config::r10k(
         owner   => $user,
         group   => 'adm',
         mode    => '0440',  # secure (may contain passwords)
-        require => Clabs::Install['r10k']
     }
 
     # puppet::master user
