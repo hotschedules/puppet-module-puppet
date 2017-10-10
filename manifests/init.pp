@@ -21,7 +21,8 @@ class puppet (
   $masterpkg       = getvar('::puppet::params::master::pkg'),
   $version         = getvar('::puppet::params::master::version'),
   $passenger       = getvar('::puppet::params::master::passenger'),
-  $r10k            = getvar('::puppet::params::master::r10k')
+  $r10k            = getvar('::puppet::params::master::r10k'),
+  $install_pkgs    = false,
 
 ) inherits puppet::params {
 
@@ -31,6 +32,7 @@ class puppet (
   validate_string         ( $agentsvcname     )
   validate_bool           ( $agentsvcensure   )
   validate_string         ( $version          )
+  validate_bool           ( $install_pkgs     )
 
   # Merge config hashes
   $x_agent  = merge($agent, hiera_hash('puppet::agent::params'))
@@ -54,11 +56,15 @@ class puppet (
   validate_string         ( $x_main["ssldir"]            )
 
   unless $::instance_role == 'puppet' {
-    class { '::puppet::agent::install':    }
-    -> class { '::puppet::agent::config':  }
+    if $install_pkgs {
+      class { '::puppet::agent::install':
+        before => Class[::puppet::agent::config],
+      }
+      contain 'puppet::agent::install'
+    }
+    class { '::puppet::agent::config':  }
     ~> class { '::puppet::agent::service': }
 
-    contain 'puppet::agent::install'
     contain 'puppet::agent::config'
     contain 'puppet::agent::service'
   }
@@ -84,11 +90,15 @@ class puppet (
     validate_string         ( $x_master["ssl_client_header"]         )
     validate_string         ( $x_master["ssl_client_verify_header"]  )
 
-    class { '::puppet::master::install': }
-    -> class { '::puppet::master::config':  }
+    if $install_pkgs {
+      class { '::puppet::master::install':
+        before => Class[::puppet::master::config],
+      }
+      contain 'puppet::master::install'
+    }
+    class { '::puppet::master::config':  }
     ~> class { '::puppet::master::service': }
 
-    contain 'puppet::master::install'
     contain 'puppet::master::config'
     contain 'puppet::master::service'
 
