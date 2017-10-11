@@ -8,6 +8,7 @@
 #
 class puppet::params::main {
   $main = {
+    install_pkgs      => true,
     disable_warnings  => 'deprecations',
     logdir            => '/var/log/puppet',
     rundir            => '/var/run/puppet',
