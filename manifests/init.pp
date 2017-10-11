@@ -21,16 +21,14 @@ class puppet (
   $masterpkg       = getvar('::puppet::params::master::pkg'),
   $version         = getvar('::puppet::params::master::version'),
   $passenger       = getvar('::puppet::params::master::passenger'),
-  $r10k            = getvar('::puppet::params::master::r10k')
+  $r10k            = getvar('::puppet::params::master::r10k'),
 
 ) inherits puppet::params {
 
   validate_hash           ( $agent            )
-  validate_string         ( $agentpkg         )
   validate_bool           ( $agentsvcenable   )
   validate_string         ( $agentsvcname     )
   validate_bool           ( $agentsvcensure   )
-  validate_string         ( $version          )
 
   # Merge config hashes
   $x_agent  = merge($agent, hiera_hash('puppet::agent::params'))
@@ -52,13 +50,23 @@ class puppet (
   validate_absolute_path  ( $x_main["logdir"]            )
   validate_absolute_path  ( $x_main["rundir"]            )
   validate_string         ( $x_main["ssldir"]            )
+  validate_bool           ( $x_main["install_pkgs"]      )
+  
+  if $x_main["install_pkgs"] {
+    validate_string       ( $agentpkg         )
+    validate_string       ( $version          )
+  }
 
   unless $::instance_role == 'puppet' {
-    class { '::puppet::agent::install':    }
-    -> class { '::puppet::agent::config':  }
+    if $x_main["install_pkgs"] {
+      class { '::puppet::agent::install':
+        before => Class[::puppet::agent::config],
+      }
+      contain 'puppet::agent::install'
+    }
+    class { '::puppet::agent::config':  }
     ~> class { '::puppet::agent::service': }
 
-    contain 'puppet::agent::install'
     contain 'puppet::agent::config'
     contain 'puppet::agent::service'
   }
@@ -84,11 +92,15 @@ class puppet (
     validate_string         ( $x_master["ssl_client_header"]         )
     validate_string         ( $x_master["ssl_client_verify_header"]  )
 
-    class { '::puppet::master::install': }
-    -> class { '::puppet::master::config':  }
+    if $x_main["install_pkgs"] {
+      class { '::puppet::master::install':
+        before => Class[::puppet::master::config],
+      }
+      contain 'puppet::master::install'
+    }
+    class { '::puppet::master::config':  }
     ~> class { '::puppet::master::service': }
 
-    contain 'puppet::master::install'
     contain 'puppet::master::config'
     contain 'puppet::master::service'
 
