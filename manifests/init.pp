@@ -27,12 +27,14 @@ class puppet (
 ) inherits puppet::params {
 
   validate_hash           ( $agent            )
-  validate_string         ( $agentpkg         )
   validate_bool           ( $agentsvcenable   )
   validate_string         ( $agentsvcname     )
   validate_bool           ( $agentsvcensure   )
-  validate_string         ( $version          )
   validate_bool           ( $install_pkgs     )
+  if $install_pkgs {
+    validate_string       ( $agentpkg         )
+    validate_string       ( $version          )
+  }
 
   # Merge config hashes
   $x_agent  = merge($agent, hiera_hash('puppet::agent::params'))
