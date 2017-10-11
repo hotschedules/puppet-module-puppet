@@ -22,7 +22,7 @@ class puppet (
   $version         = getvar('::puppet::params::master::version'),
   $passenger       = getvar('::puppet::params::master::passenger'),
   $r10k            = getvar('::puppet::params::master::r10k'),
-  $install_pkgs    = false,
+  $install_pkgs    = true,
 
 ) inherits puppet::params {
 
