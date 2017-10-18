@@ -63,6 +63,15 @@ class puppet::master::config::r10k(
   $updatecmd    = $mergedsettings['updatecmd']
   $cronuser     = $mergedsettings['cronuser']
   $remotes      = $mergedsettings['remotes']
+  if has_key($mergedsettings,'packages') {
+    $packages = $mergedsettings['packages']
+  } else {
+    $packages = {
+      'r10k' => { 'provider' => 'gem', 'ensure' => 'present' },
+      'SystemTimer' => { 'provider' => 'gem', 'ensure' => 'present' },
+      'hiera-multiyaml' => { 'provider' => 'gem', 'ensure' => 'present' },
+    }
+  }
 
   validate_bool           ( $enabled      )
   validate_bool           ( $usessh       )
@@ -76,12 +85,19 @@ class puppet::master::config::r10k(
   validate_string         ( $updatecmd    )
   validate_string         ( $cronuser     )
   validate_hash           ( $remotes      )
+  validate_hash           ( $packages     )
+
+  define installer ($provider,$ensure) {
+    ensure_resource(
+      'clabs::install',
+      $title,
+      { 'provider' => $provider, 'ensure' => $ensure }
+    )
+  }
 
   if $enabled {
 
-    ensure_resource('clabs::install', ['r10k', 'SystemTimer', 'hiera-multiyaml'],
-      { 'provider' => 'gem'}
-    )
+    create_resources(installer, $packages)
 
     clabs::dir { [
       $cachedir,
@@ -90,7 +106,6 @@ class puppet::master::config::r10k(
       owner     => $user,
       group     => $group,
       mode      => '0750',
-      require   => Clabs::Install['r10k'];
     }
 
     clabs::template {
@@ -98,7 +113,6 @@ class puppet::master::config::r10k(
         owner   => $user,
         group   => 'adm',
         mode    => '0440',  # secure (may contain passwords)
-        require => Clabs::Install['r10k']
     }
 
     # puppet::master user
