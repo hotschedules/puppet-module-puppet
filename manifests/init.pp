@@ -57,6 +57,8 @@ class puppet (
     validate_string       ( $version          )
   }
 
+  File { backup => false }
+
   unless $::instance_role == 'puppet' {
     if $x_main["install_pkgs"] {
       class { '::puppet::agent::install':
