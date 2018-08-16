@@ -42,7 +42,7 @@ class puppet::master::config::r10k(
 
   $user     = $user,
   $group    = $group,
-  $homedir  = $vardir, # user home should be var dir
+  $homedir  = '/var/lib/puppet',
 
 ) inherits puppet {
 
